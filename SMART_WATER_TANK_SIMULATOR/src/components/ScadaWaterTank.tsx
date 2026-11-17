@@ -13,7 +13,7 @@ export interface ScadaWaterTankProps {
   className?: string;
 }
 
-export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
+export const ScadaWaterTankComponent: React.FC<ScadaWaterTankProps> = ({
   volume,
   capacity,
   inflowRate,
@@ -51,13 +51,13 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
   const clampedVol = Math.max(0, Math.min(safeCap, volume));
   const percentage = (clampedVol / safeCap) * 100;
 
-  // Water level Y coordinate
+  // Water level Y coordinate (rounded for DOM SVG attribute stability)
   const waterHeight = Math.max(0, (percentage / 100) * maxWaterHeight);
-  const waterY = tankBottomY - waterHeight;
+  const waterY = Math.round(tankBottomY - waterHeight);
 
   // Threshold Y positions
-  const onLineY = tankBottomY - Math.min(1, Math.max(0, pumpOnThreshold / safeCap)) * maxWaterHeight;
-  const offLineY = tankBottomY - Math.min(1, Math.max(0, pumpOffThreshold / safeCap)) * maxWaterHeight;
+  const onLineY = Math.round(tankBottomY - Math.min(1, Math.max(0, pumpOnThreshold / safeCap)) * maxWaterHeight);
+  const offLineY = Math.round(tankBottomY - Math.min(1, Math.max(0, pumpOffThreshold / safeCap)) * maxWaterHeight);
 
   // Flow states
   const activeInflow = pumpOn && isRunning && inflowRate > 0 && clampedVol < safeCap;
@@ -78,14 +78,15 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
     ? 'READY'
     : 'OFF';
 
-  // Wave dynamics: Amplitude & speed scale with flow rate; go flat when not running or reduced motion
+  // Wave dynamics: Amplitude & speed scale with flow rate; quantized to prevent SMIL animation resets
   const waveAmplitude = !isRunning || reducedMotion
     ? 0
     : Math.min(6, Math.max(2, 2.5 + currentFlow * 0.12));
 
-  const waveDuration = !isRunning || reducedMotion
+  const rawWaveDuration = !isRunning || reducedMotion
     ? 0
     : Math.max(1.3, 3.2 - Math.min(1.8, currentFlow * 0.08));
+  const waveDuration = Math.round(rawWaveDuration * 10) / 10;
 
   // Seamless 2x-width sine waves (loop length = 180px, exactly tankWidth)
   // Generating two continuous periods (0 to 360px):
@@ -280,7 +281,7 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
           x="110"
           y="42"
           textAnchor="end"
-          className="text-[11px] font-mono uppercase tracking-wider fill-gray-500 dark:fill-slate-400 font-semibold"
+          className="text-[11px] font-mono uppercase tracking-wider fill-gray-500 dark:fill-slate-400 font-semibold select-none"
         >
           Zone Limits
         </text>
@@ -327,7 +328,7 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
             x="110"
             y={offLineY + 4}
             textAnchor="end"
-            className="text-xs font-mono font-bold fill-red-600 dark:fill-red-400"
+            className="text-[12px] font-mono font-bold fill-red-600 dark:fill-red-400 tabular-nums select-none"
           >
             High: {pumpOffThreshold}L
           </text>
@@ -340,7 +341,7 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
             x="110"
             y={onLineY + 4}
             textAnchor="end"
-            className="text-xs font-mono font-bold fill-amber-600 dark:fill-amber-400"
+            className="text-[12px] font-mono font-bold fill-amber-600 dark:fill-amber-400 tabular-nums select-none"
           >
             Low: {pumpOnThreshold}L
           </text>
@@ -443,7 +444,7 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
             x="20"
             y="52"
             textAnchor="middle"
-            className={`text-[10px] font-mono font-bold tracking-wider ${
+            className={`text-[11px] font-mono font-bold tracking-wider select-none ${
               pumpStatus === 'RUNNING'
                 ? 'fill-emerald-500 dark:fill-emerald-400'
                 : pumpStatus === 'READY'
@@ -527,7 +528,6 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
               <path
                 d={wavePathBack}
                 fill="url(#scadaWaterBackGrad)"
-                style={{ transition: 'd 150ms ease-out' }}
               >
                 {isRunning && !reducedMotion && waveDuration > 0 && (
                   <animateTransform
@@ -549,7 +549,6 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
               <path
                 d={wavePathFront}
                 fill="url(#scadaWaterDepthGrad)"
-                style={{ transition: 'd 150ms ease-out' }}
               >
                 {isRunning && !reducedMotion && waveDuration > 0 && (
                   <animateTransform
@@ -660,7 +659,7 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
               x="39"
               y="16"
               textAnchor="middle"
-              className="text-xs font-mono font-bold fill-cyan-300 tracking-wider"
+              className="text-[12px] font-mono font-bold fill-cyan-300 tracking-wider tabular-nums select-none"
             >
               {clampedVol.toFixed(1)} L
             </text>
@@ -677,7 +676,7 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
               <text
                 x="424"
                 y={yPos + 3.5}
-                className={`text-[10px] font-mono ${
+                className={`text-[11px] font-mono tabular-nums select-none ${
                   isPassed ? 'fill-blue-600 dark:fill-blue-400 font-bold' : 'fill-gray-400 dark:fill-slate-500'
                 }`}
               >
@@ -748,7 +747,7 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
             x="0"
             y="22"
             textAnchor="middle"
-            className={`text-[9px] font-mono font-bold ${
+            className={`text-[11px] font-mono font-bold select-none ${
               activeOutflow ? 'fill-emerald-600 dark:fill-emerald-400' : 'fill-red-500'
             }`}
           >
@@ -759,3 +758,5 @@ export const ScadaWaterTank: React.FC<ScadaWaterTankProps> = ({
     </div>
   );
 };
+
+export const ScadaWaterTank = React.memo(ScadaWaterTankComponent);

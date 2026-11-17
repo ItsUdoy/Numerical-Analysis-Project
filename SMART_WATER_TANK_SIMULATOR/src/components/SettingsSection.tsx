@@ -33,7 +33,7 @@ interface SettingsSectionProps {
   onResetSettings?: () => void;
 }
 
-export const SettingsSection: React.FC<SettingsSectionProps> = () => {
+export const SettingsSectionComponent: React.FC<SettingsSectionProps> = () => {
   const {
     settings,
     updateSettings,
@@ -239,18 +239,18 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
   return (
     <div className="space-y-6 font-sans pb-16">
       {/* Banner */}
-      <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4 font-sans">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--accent)]/15 text-[var(--accent)] border border-[var(--accent)]/30">
+            <span className="px-2.5 py-0.5 rounded-full text-[12px] font-semibold bg-[var(--accent)]/15 text-[var(--accent)] border border-[var(--accent)]/30">
               System Calibration
             </span>
-            <span className="text-xs text-[var(--text-secondary)] font-medium">Single Source of Truth</span>
+            <span className="text-[12px] text-[var(--text-secondary)] font-medium">Single Source of Truth</span>
           </div>
-          <h2 className="text-xl font-bold text-[var(--text-primary)]">
+          <h2 className="text-[22px] sm:text-[24px] font-bold text-[var(--text-primary)] leading-[1.25]">
             Global Simulation Parameters &amp; Presets
           </h2>
-          <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+          <p className="text-[13px] text-[var(--text-secondary)] mt-1 leading-[1.5]">
             Calibrate tank capacity, inflow/outflow dynamics, hysteresis thresholds, and numerical solver configurations.
           </p>
         </div>
@@ -265,7 +265,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--text-primary)] border border-[var(--border)] flex items-center gap-1.5 transition cursor-pointer"
+            className="px-3.5 py-2 rounded-lg text-[12px] font-semibold bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--text-primary)] border border-[var(--border)] flex items-center gap-1.5 transition cursor-pointer"
           >
             <Upload className="w-3.5 h-3.5 text-[var(--accent)]" />
             <span>Import JSON</span>
@@ -273,7 +273,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
           <button
             onClick={handleExportJSON}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] border border-[var(--border)] flex items-center gap-1.5 transition cursor-pointer"
+            className="px-3.5 py-2 rounded-lg text-[12px] font-semibold bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] border border-[var(--border)] flex items-center gap-1.5 transition cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export JSON</span>
@@ -281,7 +281,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
           <button
             onClick={() => setShowResetModal(true)}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/30 flex items-center gap-1.5 transition cursor-pointer"
+            className="px-3.5 py-2 rounded-lg text-[12px] font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/30 flex items-center gap-1.5 transition cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Factory</span>
@@ -290,16 +290,16 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
       </div>
 
       {/* Engineering Presets Selector */}
-      <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4">
+      <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4 font-sans">
         <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
-          <div className="flex items-center gap-2 text-sm font-bold text-[var(--text-primary)]">
+          <div className="flex items-center gap-2 text-[15px] sm:text-[16px] font-bold text-[var(--text-primary)] leading-[1.25]">
             <Cpu className="w-4 h-4 text-[var(--accent)]" />
             <h3>ENGINEERING PRESETS (ONE-CLICK CALIBRATION)</h3>
           </div>
           {previousPresetSettings && (
             <button
               onClick={handleUndoPreset}
-              className="text-xs text-[var(--accent)] flex items-center gap-1 hover:underline cursor-pointer"
+              className="text-[12px] text-[var(--accent)] font-semibold flex items-center gap-1 hover:underline cursor-pointer"
             >
               <Undo2 className="w-3.5 h-3.5" />
               <span>Undo Preset</span>
@@ -329,11 +329,11 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="font-bold text-sm text-[var(--text-primary)] flex items-center gap-2">
+                  <div className="font-bold text-[14px] sm:text-[15px] text-[var(--text-primary)] flex items-center gap-2">
                     {isSelected && <Check className="w-4 h-4 text-[var(--accent)]" />}
                     <span>{p.name}</span>
                   </div>
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                  <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold border ${
                     isSelected ? 'bg-[var(--accent)] text-white border-[var(--accent)]' : 'bg-[var(--bg-elevated)] text-[var(--text-muted)] border-[var(--border)]'
                   }`}>
                     {isSelected ? 'Active Preset' : p.scale}
@@ -341,22 +341,22 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                 </div>
 
                 {/* Key Values as Chips */}
-                <div className="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
-                  <span className="p-1 rounded bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-secondary)]">
+                <div className="grid grid-cols-2 gap-1.5 text-[12px] font-mono tabular-nums">
+                  <span className="p-1.5 rounded bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-secondary)]">
                     Cap: <strong>{p.capacity} L</strong>
                   </span>
-                  <span className="p-1 rounded bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-secondary)]">
+                  <span className="p-1.5 rounded bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-secondary)]">
                     Init: <strong>{p.initial} L</strong>
                   </span>
-                  <span className="p-1 rounded bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-secondary)]">
+                  <span className="p-1.5 rounded bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-secondary)]">
                     In: <strong>{p.inflow} L/min</strong>
                   </span>
-                  <span className="p-1 rounded bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-secondary)]">
+                  <span className="p-1.5 rounded bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-secondary)]">
                     Out: <strong>{p.outflow} L/min</strong>
                   </span>
                 </div>
 
-                <div className="text-[11px] text-[var(--text-muted)] font-mono">
+                <div className="text-[12px] text-[var(--text-muted)] font-mono tabular-nums">
                   Hysteresis: {p.on} L ON ↔ {p.off} L OFF
                 </div>
               </div>
@@ -366,13 +366,13 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
       </div>
 
       {/* Interactive Hysteresis Visualizer */}
-      <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-3">
+      <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-3 font-sans">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2 text-sm font-bold text-[var(--text-primary)]">
+          <div className="flex items-center gap-2 text-[15px] sm:text-[16px] font-bold text-[var(--text-primary)] leading-[1.25]">
             <Layers className="w-4 h-4 text-[var(--accent)]" />
             <span>Interactive Hysteresis Band Visualizer (0 L → {pendingSettings.tankCapacity} L)</span>
           </div>
-          <span className="text-xs text-[var(--text-muted)] font-mono">
+          <span className="text-[12px] text-[var(--text-muted)] font-mono tabular-nums">
             Band Width: {pendingSettings.pumpOffThreshold - pendingSettings.pumpOnThreshold} L
           </span>
         </div>
@@ -381,7 +381,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
         <div className="relative w-full h-8 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-strong)] overflow-hidden">
           {/* Low Alarm Zone (0 to Pump ON) */}
           <div
-            className="absolute left-0 top-0 bottom-0 bg-amber-500/20 border-r border-amber-500/40 flex items-center justify-center text-[10px] font-mono text-amber-500 font-bold"
+            className="absolute left-0 top-0 bottom-0 bg-amber-500/20 border-r border-amber-500/40 flex items-center justify-center text-[11px] font-mono tabular-nums text-amber-500 font-bold"
             style={{ width: `${(pendingSettings.pumpOnThreshold / pendingSettings.tankCapacity) * 100}%` }}
           >
             PUMP ON: {pendingSettings.pumpOnThreshold} L
@@ -389,7 +389,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
           {/* Normal Hysteresis Operating Band */}
           <div
-            className="absolute top-0 bottom-0 bg-[var(--accent)]/15 border-r border-[var(--accent)]/40 flex items-center justify-center text-[10px] font-mono text-[var(--accent)] font-bold"
+            className="absolute top-0 bottom-0 bg-[var(--accent)]/15 border-r border-[var(--accent)]/40 flex items-center justify-center text-[11px] font-mono tabular-nums text-[var(--accent)] font-bold"
             style={{
               left: `${(pendingSettings.pumpOnThreshold / pendingSettings.tankCapacity) * 100}%`,
               width: `${((pendingSettings.pumpOffThreshold - pendingSettings.pumpOnThreshold) / pendingSettings.tankCapacity) * 100}%`,
@@ -400,7 +400,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
           {/* High Alarm Zone (Pump OFF to Capacity) */}
           <div
-            className="absolute right-0 top-0 bottom-0 bg-rose-500/20 flex items-center justify-center text-[10px] font-mono text-rose-500 font-bold"
+            className="absolute right-0 top-0 bottom-0 bg-rose-500/20 flex items-center justify-center text-[11px] font-mono tabular-nums text-rose-500 font-bold"
             style={{
               width: `${((pendingSettings.tankCapacity - pendingSettings.pumpOffThreshold) / pendingSettings.tankCapacity) * 100}%`,
             }}
@@ -416,7 +416,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
           />
         </div>
 
-        <div className="flex justify-between text-[11px] text-[var(--text-muted)] font-mono">
+        <div className="flex justify-between text-[12px] text-[var(--text-muted)] font-mono tabular-nums">
           <span>0 L (Empty)</span>
           <span className="text-[var(--accent)] font-semibold">V(0) = {pendingSettings.initialVolume} L</span>
           <span>{pendingSettings.tankCapacity} L (Max Capacity)</span>
@@ -424,17 +424,17 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
       </div>
 
       {/* Main Parameters Form Grid (3 Columns on Desktop, 2 on Tablet, 1 on Mobile) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-sans">
         {/* Column 1: Tank Volume & Geometry */}
         <div className="card-surface p-5 rounded-xl border border-[var(--border)] shadow-md space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-[var(--border)] text-sm font-bold text-[var(--text-primary)]">
+          <div className="flex items-center gap-2 pb-2 border-b border-[var(--border)] text-[15px] sm:text-[16px] font-bold text-[var(--text-primary)] leading-[1.25]">
             <Sliders className="w-4 h-4 text-[var(--accent)]" />
             <span>1. Tank Volume &amp; Levels</span>
           </div>
 
           {/* Capacity */}
           <div className="space-y-1">
-            <label className="block text-xs font-medium text-[var(--text-secondary)]">Max Tank Capacity:</label>
+            <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Max Tank Capacity:</label>
             <div className="relative">
               <input
                 type="number"
@@ -443,20 +443,20 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                   setActivePreset('custom');
                   updateSettings({ tankCapacity: Number(e.target.value) });
                 }}
-                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-12 text-[var(--text-primary)] font-mono font-bold text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none"
+                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-12 text-[var(--text-primary)] font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-[var(--accent)] outline-none"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] font-mono">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-[var(--text-muted)] font-mono">
                 L
               </span>
             </div>
             {validationErrors.tankCapacity && (
-              <p className="text-[11px] text-rose-500 font-medium">{validationErrors.tankCapacity}</p>
+              <p className="text-[12px] text-rose-500 font-medium">{validationErrors.tankCapacity}</p>
             )}
           </div>
 
           {/* Initial Volume */}
           <div className="space-y-1">
-            <label className="block text-xs font-medium text-[var(--text-secondary)]">Initial Volume V(0):</label>
+            <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Initial Volume V(0):</label>
             <div className="relative">
               <input
                 type="number"
@@ -465,32 +465,32 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                   setActivePreset('custom');
                   updateSettings({ initialVolume: Number(e.target.value) });
                 }}
-                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-12 text-[var(--text-primary)] font-mono font-bold text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none"
+                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-12 text-[var(--text-primary)] font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-[var(--accent)] outline-none"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] font-mono">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-[var(--text-muted)] font-mono">
                 L
               </span>
             </div>
             {validationErrors.initialVolume && (
-              <p className="text-[11px] text-rose-500 font-medium">{validationErrors.initialVolume}</p>
+              <p className="text-[12px] text-rose-500 font-medium">{validationErrors.initialVolume}</p>
             )}
           </div>
 
           {/* Physics Discharge Model */}
           <div className="space-y-1">
-            <label className="block text-xs font-medium text-[var(--text-secondary)]">Governing Physics Model:</label>
+            <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Governing Physics Model:</label>
             <select
               value={pendingSettings.physicsModel}
               onChange={(e) => {
                 setActivePreset('custom');
                 updateSettings({ physicsModel: e.target.value as any });
               }}
-              className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 text-[var(--text-primary)] text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none cursor-pointer"
+              className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 text-[var(--text-primary)] text-[13px] font-medium focus:ring-2 focus:ring-[var(--accent)] outline-none cursor-pointer"
             >
               <option value="torricelli">Torricelli Non-Linear (dV/dt = Qin − k√V)</option>
               <option value="linear">Linear Constant Flow (dV/dt = Qin − Qout)</option>
             </select>
-            <p className="text-[10px] text-[var(--text-muted)]">
+            <p className="text-[12px] text-[var(--text-muted)] leading-[1.4]">
               {pendingSettings.physicsModel === 'torricelli'
                 ? 'Exact Torricelli gravity orifice law'
                 : 'Constant baseline outflow rate'}
@@ -500,14 +500,14 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
         {/* Column 2: Flow Rates & Hysteresis Limits */}
         <div className="card-surface p-5 rounded-xl border border-[var(--border)] shadow-md space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-[var(--border)] text-sm font-bold text-[var(--text-primary)]">
+          <div className="flex items-center gap-2 pb-2 border-b border-[var(--border)] text-[15px] sm:text-[16px] font-bold text-[var(--text-primary)] leading-[1.25]">
             <Sliders className="w-4 h-4 text-[var(--accent)]" />
             <span>2. Flow Rates &amp; Hysteresis</span>
           </div>
 
           {/* Inflow Rate */}
           <div className="space-y-1">
-            <label className="block text-xs font-medium text-[var(--text-secondary)]">Pump Inflow Rate:</label>
+            <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Pump Inflow Rate:</label>
             <div className="relative">
               <input
                 type="number"
@@ -516,21 +516,21 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                   setActivePreset('custom');
                   updateSettings({ inflowRate: Number(e.target.value) });
                 }}
-                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-16 text-[var(--text-primary)] font-mono font-bold text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none"
+                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-16 text-[var(--text-primary)] font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-[var(--accent)] outline-none"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] font-mono">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-[var(--text-muted)] font-mono">
                 L/min
               </span>
             </div>
             {validationErrors.inflowRate && (
-              <p className="text-[11px] text-rose-500 font-medium">{validationErrors.inflowRate}</p>
+              <p className="text-[12px] text-rose-500 font-medium">{validationErrors.inflowRate}</p>
             )}
           </div>
 
           {/* Outflow Rate & Discharge Coefficient k */}
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="block text-xs font-medium text-[var(--text-secondary)]">Outflow Rate:</label>
+              <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Outflow Rate:</label>
               <div className="relative">
                 <input
                   type="number"
@@ -539,16 +539,16 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                     setActivePreset('custom');
                     updateSettings({ outflowRate: Number(e.target.value) });
                   }}
-                  className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-14 text-[var(--text-primary)] font-mono text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none"
+                  className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-14 text-[var(--text-primary)] font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-[var(--accent)] outline-none"
                 />
-                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-[var(--text-muted)] font-mono">
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] text-[var(--text-muted)] font-mono">
                   L/min
                 </span>
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-medium text-[var(--text-secondary)]">Torricelli (k):</label>
+              <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Torricelli (k):</label>
               <div className="relative">
                 <input
                   type="number"
@@ -558,7 +558,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                     setActivePreset('custom');
                     updateSettings({ torricelliK: Number(e.target.value) });
                   }}
-                  className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 text-[var(--text-primary)] font-mono text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none"
+                  className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 text-[var(--text-primary)] font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-[var(--accent)] outline-none"
                 />
               </div>
             </div>
@@ -566,7 +566,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
           {/* Inflow Warning */}
           {inflowWarning && (
-            <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-[11px] flex items-center gap-1.5">
+            <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-[12px] flex items-center gap-1.5">
               <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
               <span>{inflowWarning}</span>
             </div>
@@ -575,7 +575,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
           {/* Low Pump ON & High Pump OFF */}
           <div className="grid grid-cols-2 gap-2 pt-1">
             <div className="space-y-1">
-              <label className="block text-xs font-medium text-[var(--text-secondary)]">Pump ON Trigger:</label>
+              <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Pump ON Trigger:</label>
               <div className="relative">
                 <input
                   type="number"
@@ -584,16 +584,16 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                     setActivePreset('custom');
                     updateSettings({ pumpOnThreshold: Number(e.target.value) });
                   }}
-                  className="w-full bg-[var(--bg-elevated)] border border-amber-500/40 rounded-lg p-2.5 pr-10 text-amber-500 font-mono font-bold text-xs focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-[var(--bg-elevated)] border border-amber-500/40 rounded-lg p-2.5 pr-10 text-amber-500 font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-amber-500 outline-none"
                 />
-                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-[var(--text-muted)] font-mono">
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] text-[var(--text-muted)] font-mono">
                   L
                 </span>
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-medium text-[var(--text-secondary)]">Pump OFF Trigger:</label>
+              <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Pump OFF Trigger:</label>
               <div className="relative">
                 <input
                   type="number"
@@ -602,16 +602,16 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                     setActivePreset('custom');
                     updateSettings({ pumpOffThreshold: Number(e.target.value) });
                   }}
-                  className="w-full bg-[var(--bg-elevated)] border border-rose-500/40 rounded-lg p-2.5 pr-10 text-rose-500 font-mono font-bold text-xs focus:ring-2 focus:ring-rose-500 outline-none"
+                  className="w-full bg-[var(--bg-elevated)] border border-rose-500/40 rounded-lg p-2.5 pr-10 text-rose-500 font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-rose-500 outline-none"
                 />
-                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-[var(--text-muted)] font-mono">
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] text-[var(--text-muted)] font-mono">
                   L
                 </span>
               </div>
             </div>
           </div>
           {(validationErrors.pumpOnThreshold || validationErrors.pumpOffThreshold) && (
-            <p className="text-[11px] text-rose-500 font-medium">
+            <p className="text-[12px] text-rose-500 font-medium">
               {validationErrors.pumpOnThreshold || validationErrors.pumpOffThreshold}
             </p>
           )}
@@ -619,14 +619,14 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
         {/* Column 3: Numerical Solver Configurations */}
         <div className="card-surface p-5 rounded-xl border border-[var(--border)] shadow-md space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-[var(--border)] text-sm font-bold text-[var(--text-primary)]">
+          <div className="flex items-center gap-2 pb-2 border-b border-[var(--border)] text-[15px] sm:text-[16px] font-bold text-[var(--text-primary)] leading-[1.25]">
             <Cpu className="w-4 h-4 text-[var(--accent)]" />
             <span>3. Solver Configurations</span>
           </div>
 
           {/* Default Step Size h */}
           <div className="space-y-1">
-            <label className="block text-xs font-medium text-[var(--text-secondary)]">Global Step Size h:</label>
+            <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Global Step Size h:</label>
             <div className="relative">
               <input
                 type="number"
@@ -636,20 +636,20 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                   setActivePreset('custom');
                   updateSettings({ defaultStepSize: Number(e.target.value) });
                 }}
-                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-14 text-[var(--text-primary)] font-mono font-bold text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none"
+                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-14 text-[var(--text-primary)] font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-[var(--accent)] outline-none"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] font-mono">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-[var(--text-muted)] font-mono">
                 min
               </span>
             </div>
             {validationErrors.defaultStepSize && (
-              <p className="text-[11px] text-rose-500 font-medium">{validationErrors.defaultStepSize}</p>
+              <p className="text-[12px] text-rose-500 font-medium">{validationErrors.defaultStepSize}</p>
             )}
           </div>
 
           {/* Default Duration T */}
           <div className="space-y-1">
-            <label className="block text-xs font-medium text-[var(--text-secondary)]">Simulation Duration T:</label>
+            <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Simulation Duration T:</label>
             <div className="relative">
               <input
                 type="number"
@@ -658,9 +658,9 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                   setActivePreset('custom');
                   updateSettings({ defaultDuration: Number(e.target.value) });
                 }}
-                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-14 text-[var(--text-primary)] font-mono font-bold text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none"
+                className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 pr-14 text-[var(--text-primary)] font-mono font-bold text-[13px] tabular-nums focus:ring-2 focus:ring-[var(--accent)] outline-none"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] font-mono">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-[var(--text-muted)] font-mono">
                 min
               </span>
             </div>
@@ -668,14 +668,14 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
           {/* Root Finding Tolerance */}
           <div className="space-y-1">
-            <label className="block text-xs font-medium text-[var(--text-secondary)]">Root Finding Tolerance (ε):</label>
+            <label className="block text-[13px] font-semibold text-[var(--text-secondary)] tracking-[0.02em]">Root Finding Tolerance (ε):</label>
             <select
               value={pendingSettings.rootTolerance}
               onChange={(e) => {
                 setActivePreset('custom');
                 updateSettings({ rootTolerance: Number(e.target.value) });
               }}
-              className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 text-[var(--text-primary)] font-mono text-xs focus:ring-2 focus:ring-[var(--accent)] outline-none cursor-pointer"
+              className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg p-2.5 text-[var(--text-primary)] font-mono text-[13px] tabular-nums focus:ring-2 focus:ring-[var(--accent)] outline-none cursor-pointer"
             >
               <option value="0.001">10⁻³ min (~0.06 s - Fast)</option>
               <option value="0.0001">10⁻⁴ min (~0.006 s - Standard)</option>
@@ -687,16 +687,16 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
       </div>
 
       {/* App Preferences Section */}
-      <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4">
-        <div className="flex items-center gap-2 pb-3 border-b border-[var(--border)] text-sm font-bold text-[var(--text-primary)]">
+      <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4 font-sans">
+        <div className="flex items-center gap-2 pb-3 border-b border-[var(--border)] text-[15px] sm:text-[16px] font-bold text-[var(--text-primary)] leading-[1.25]">
           <SettingsIcon className="w-4 h-4 text-[var(--accent)]" />
           <span>APP PREFERENCES &amp; INTERFACE CONTROLS</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-[12px]">
           {/* Theme Selector */}
           <div className="space-y-2">
-            <label className="block font-medium text-[var(--text-secondary)]">Active Theme:</label>
+            <label className="block font-semibold text-[var(--text-secondary)] text-[13px] tracking-[0.02em]">Active Theme:</label>
             <div className="flex gap-2 p-1 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border)]">
               <button
                 onClick={() => setTheme('dark')}
@@ -717,44 +717,44 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                 <span>Light Mode</span>
               </button>
             </div>
-            <p className="text-[10px] text-[var(--text-muted)]">
+            <p className="text-[12px] text-[var(--text-muted)] leading-[1.4]">
               Persisted in localStorage; respects WCAG AA contrast standards.
             </p>
           </div>
 
           {/* Sound FX */}
           <div className="space-y-2">
-            <label className="block font-medium text-[var(--text-secondary)]">Audio &amp; Synthesized FX:</label>
+            <label className="block font-semibold text-[var(--text-secondary)] text-[13px] tracking-[0.02em]">Audio &amp; Synthesized FX:</label>
             <button
               onClick={() => {
                 const next = !isSoundMuted;
                 setIsSoundMuted(next);
                 if (!next) soundFx.playSuccess();
               }}
-              className="w-full py-2.5 px-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--text-primary)] font-semibold flex items-center justify-between transition cursor-pointer"
+              className="w-full py-2.5 px-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--text-primary)] font-semibold flex items-center justify-between transition cursor-pointer text-[13px]"
             >
               <div className="flex items-center gap-2">
                 {isSoundMuted ? <VolumeX className="w-4 h-4 text-rose-500" /> : <Volume2 className="w-4 h-4 text-emerald-500" />}
                 <span>{isSoundMuted ? 'Muted (Silent)' : 'Sound Enabled'}</span>
               </div>
-              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${isSoundMuted ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
+              <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${isSoundMuted ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
                 {isSoundMuted ? 'OFF' : 'ON'}
               </span>
             </button>
-            <p className="text-[10px] text-[var(--text-muted)]">
+            <p className="text-[12px] text-[var(--text-muted)] leading-[1.4]">
               Subtle Web Audio feedback on clicks, calculations, and thresholds.
             </p>
           </div>
 
           {/* Simulation Speed */}
           <div className="space-y-2">
-            <label className="block font-medium text-[var(--text-secondary)]">Simulation Speed:</label>
+            <label className="block font-semibold text-[var(--text-secondary)] text-[13px] tracking-[0.02em]">Simulation Speed:</label>
             <div className="flex gap-1 p-1 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border)]">
               {[1, 2, 5].map((speed) => (
                 <button
                   key={speed}
                   onClick={() => updateSettings({ simSpeed: speed })}
-                  className={`flex-1 py-2 rounded-lg font-mono font-semibold transition cursor-pointer ${
+                  className={`flex-1 py-2 rounded-lg font-mono font-semibold tabular-nums text-[13px] transition cursor-pointer ${
                     pendingSettings.simSpeed === speed
                       ? 'bg-[var(--accent)] text-white shadow-sm'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -764,7 +764,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-[var(--text-muted)]">
+            <p className="text-[12px] text-[var(--text-muted)] leading-[1.4]">
               Scales the live telemetry tick rate on the Dashboard and Live Sim pages.
             </p>
           </div>
@@ -773,16 +773,16 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
       {/* Sticky Bottom Action Bar when there are unsaved changes */}
       {isSettingsDirty && (
-        <div className="fixed bottom-4 left-4 right-4 md:left-72 md:right-8 z-40 bg-[var(--bg-surface)] border border-[var(--accent)] rounded-2xl p-4 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-4 left-4 right-4 md:left-72 md:right-8 z-40 bg-[var(--bg-surface)] border border-[var(--accent)] rounded-2xl p-4 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 duration-300 font-sans">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center shrink-0">
               <AlertCircle className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-bold text-sm text-[var(--text-primary)]">
+              <div className="font-bold text-[14px] sm:text-[15px] text-[var(--text-primary)]">
                 You have unsaved configuration changes
               </div>
-              <p className="text-xs text-[var(--text-secondary)]">
+              <p className="text-[13px] text-[var(--text-secondary)] leading-[1.4]">
                 Changes will drive every page in the dashboard once saved.
               </p>
             </div>
@@ -795,7 +795,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                 discardSettings();
                 showToast('Discarded unsaved changes');
               }}
-              className="flex-1 sm:flex-initial px-4 py-2 rounded-xl border border-[var(--border)] hover:bg-[var(--bg-elevated)] text-[var(--text-secondary)] text-xs font-semibold transition cursor-pointer"
+              className="flex-1 sm:flex-initial px-4 py-2 rounded-xl border border-[var(--border)] hover:bg-[var(--bg-elevated)] text-[var(--text-secondary)] text-[13px] font-semibold transition cursor-pointer"
             >
               Discard
             </button>
@@ -807,7 +807,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
                 showToast('Settings saved and persisted');
               }}
               disabled={!isValid}
-              className="flex-1 sm:flex-initial px-5 py-2 rounded-xl bg-[var(--accent)] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold shadow-md flex items-center justify-center gap-1.5 transition cursor-pointer"
+              className="flex-1 sm:flex-initial px-5 py-2 rounded-xl bg-[var(--accent)] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[13px] font-bold shadow-md flex items-center justify-center gap-1.5 transition cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>Save Changes</span>
@@ -818,19 +818,19 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
 
       {/* Reset Confirmation Dialog Modal */}
       {showResetModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 font-sans">
           <div className="card-surface p-6 rounded-2xl border border-[var(--border-strong)] max-w-md w-full space-y-4 shadow-2xl">
             <div className="flex items-center gap-3 text-rose-500">
               <AlertTriangle className="w-6 h-6 shrink-0" />
-              <h3 className="font-bold text-base text-[var(--text-primary)]">
+              <h3 className="font-bold text-[17px] sm:text-[18px] text-[var(--text-primary)] leading-[1.25]">
                 Confirm Factory Reset
               </h3>
             </div>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+            <p className="text-[13px] text-[var(--text-secondary)] leading-[1.5]">
               Are you sure you want to restore all parameters to default factory values?
               All custom capacities, thresholds, and solver settings will be cleared.
             </p>
-            <div className="pt-2 flex justify-end gap-3 text-xs font-semibold">
+            <div className="pt-2 flex justify-end gap-3 text-[13px] font-semibold">
               <button
                 onClick={() => setShowResetModal(false)}
                 className="px-4 py-2 rounded-lg border border-[var(--border)] hover:bg-[var(--bg-elevated)] text-[var(--text-secondary)] cursor-pointer"
@@ -856,3 +856,5 @@ export const SettingsSection: React.FC<SettingsSectionProps> = () => {
     </div>
   );
 };
+
+export const SettingsSection = React.memo(SettingsSectionComponent);

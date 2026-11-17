@@ -44,7 +44,7 @@ interface GraphsSectionProps {
   onStepSizeChange?: (h: number) => void;
 }
 
-export const GraphsSection: React.FC<GraphsSectionProps> = ({
+export const GraphsSectionComponent: React.FC<GraphsSectionProps> = ({
   baseOdeParams,
   globalStepSize = 1.0,
   onStepSizeChange,
@@ -263,7 +263,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
   const CustomGraphTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload || !payload.length) return null;
     return (
-      <div className="bg-[var(--bg-surface)] border border-[var(--border-strong)] rounded-xl p-3 shadow-xl text-xs space-y-1.5 backdrop-blur-md min-w-[210px]">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-strong)] rounded-xl p-3 shadow-xl text-[12px] space-y-1.5 backdrop-blur-md min-w-[210px] font-sans">
         <div className="font-semibold text-[var(--text-primary)] border-b border-[var(--border)] pb-1 flex justify-between">
           <span>Time t = {Number(label).toFixed(2)} min</span>
         </div>
@@ -273,9 +273,9 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
             <div key={idx} className="flex items-center justify-between gap-4 py-0.5">
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color || item.stroke }} />
-                <span className="text-[var(--text-secondary)] font-medium">{item.name}:</span>
+                <span className="text-[var(--text-secondary)] font-medium text-[12px]">{item.name}:</span>
               </div>
-              <span className="font-mono font-bold text-[var(--text-primary)]">
+              <span className="font-mono font-bold text-[var(--text-primary)] text-[12px] tabular-nums">
                 {typeof item.value === 'number'
                   ? item.value < 0.01 && item.value > 0
                     ? item.value.toExponential(3)
@@ -292,26 +292,26 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
   return (
     <div className="space-y-6 font-sans">
       {/* Top Header & Sub-Tabs Navigation */}
-      <div className="card-surface p-4 rounded-xl border border-[var(--border)] shadow-md space-y-3">
+      <div className="card-surface p-4 rounded-xl border border-[var(--border)] shadow-md space-y-3 font-sans">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h3 className="font-semibold text-base text-[var(--text-primary)] flex items-center gap-2">
+            <h3 className="font-semibold text-[17px] sm:text-[18px] text-[var(--text-primary)] leading-[1.25] flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-[var(--accent)]" /> Numerical Analysis &amp; Trajectory Horizons
             </h3>
-            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            <p className="text-[13px] text-[var(--text-secondary)] mt-1 leading-[1.5]">
               Compare numerical solvers against the reference solution (RK4, h = 0.01 min) across step sizes and hysteresis cycles.
             </p>
           </div>
 
           {/* Global Step Size Selector */}
           <div className="flex items-center gap-2 self-start md:self-auto flex-wrap">
-            <span className="text-xs text-[var(--text-secondary)] font-medium">Step Size h:</span>
+            <span className="text-[13px] text-[var(--text-secondary)] font-semibold tracking-[0.02em]">Step Size h:</span>
             <div className="flex gap-1 p-1 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)]">
               {[0.25, 0.5, 1.0, 2.0, 5.0].map((val) => (
                 <button
                   key={val}
                   onClick={() => handleStepSizeSelect(val)}
-                  className={`px-2.5 py-1 rounded-md font-mono text-xs font-semibold transition cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-md font-mono text-[12px] font-semibold tabular-nums transition cursor-pointer ${
                     stepSize === val
                       ? 'bg-[var(--accent)] text-white shadow-sm'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -321,12 +321,12 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                 </button>
               ))}
             </div>
-            <span className="text-[11px] text-[var(--text-muted)] font-mono">
+            <span className="text-[12px] text-[var(--text-muted)] font-mono tabular-nums">
               ({Math.round(duration / stepSize)} steps)
             </span>
             <button
               onClick={handleExportCSV}
-              className="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer ml-1"
+              className="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] text-[12px] font-semibold flex items-center gap-1.5 transition cursor-pointer ml-1"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export CSV</span>
@@ -372,8 +372,8 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                     : 'bg-[var(--bg-elevated)]/40 border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)]'
                 }`}
               >
-                <div className="font-bold text-xs">{t.label}</div>
-                <div className="text-[10px] text-[var(--text-muted)] truncate mt-0.5">{t.sub}</div>
+                <div className="font-bold text-[13px]">{t.label}</div>
+                <div className="text-[11px] text-[var(--text-muted)] truncate mt-0.5">{t.sub}</div>
               </button>
             );
           })}
@@ -382,22 +382,22 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
 
       {/* TAB 1: TRAJECTORIES COMPARISON */}
       {activeTab === 'trajectories' && (
-        <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4">
+        <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4 font-sans">
           {/* Header & Controls */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[var(--border)]">
             <div className="flex items-center gap-3 flex-wrap">
-              <span className="font-bold text-sm text-[var(--text-primary)]">
+              <span className="font-bold text-[15px] sm:text-[16px] text-[var(--text-primary)] leading-[1.25]">
                 Volume Trajectory Comparison (h = {stepSize} min)
               </span>
               {/* Stat Chips */}
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-2 py-0.5 rounded-full text-xs font-mono font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                <span className="px-2 py-0.5 rounded-full text-[12px] font-mono font-semibold tabular-nums bg-amber-500/10 text-amber-500 border border-amber-500/20">
                   Euler: {euler.finalVolume.toFixed(2)} L (+{(euler.finalVolume - euler.refFinalVolume).toFixed(2)} L)
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-xs font-mono font-semibold bg-cyan-500/10 text-cyan-500 border border-cyan-500/20">
+                <span className="px-2 py-0.5 rounded-full text-[12px] font-mono font-semibold tabular-nums bg-cyan-500/10 text-cyan-500 border border-cyan-500/20">
                   Heun: {modEuler.finalVolume.toFixed(2)} L (+{(modEuler.finalVolume - modEuler.refFinalVolume).toFixed(3)} L)
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                <span className="px-2 py-0.5 rounded-full text-[12px] font-mono font-semibold tabular-nums bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
                   RK4: {rk4.finalVolume.toFixed(2)} L (0.00 L)
                 </span>
               </div>
@@ -410,7 +410,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                   soundFx.playClick();
                   setIsEndRegionZoomed(!isEndRegionZoomed);
                 }}
-                className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1 border transition cursor-pointer ${
+                className={`px-2.5 py-1 rounded-md text-[12px] font-semibold flex items-center gap-1 border transition cursor-pointer ${
                   isEndRegionZoomed
                     ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm'
                     : 'bg-[var(--bg-elevated)] border-[var(--border)] text-[var(--text-secondary)]'
@@ -420,7 +420,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                 <span>{isEndRegionZoomed ? 'Reset Zoom' : 'Zoom End Region (Last 8m)'}</span>
               </button>
 
-              <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-xs">
+              <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-[12px]">
                 <button
                   onClick={() => setTrajectoryViewMode('absolute')}
                   className={`px-2 py-1 rounded-md font-semibold transition cursor-pointer ${
@@ -456,7 +456,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
           </div>
 
           {/* Interactive Legend Row (Placed above the chart at top-left) */}
-          <div className="flex flex-wrap items-center gap-2 text-xs">
+          <div className="flex flex-wrap items-center gap-2 text-[12px]">
             <button
               onClick={() => toggleSeries('reference')}
               className={`flex items-center gap-1.5 px-3 py-1 rounded-full border transition cursor-pointer ${
@@ -505,7 +505,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
 
           {/* Main Chart: Absolute Volume */}
           {(trajectoryViewMode === 'absolute' || trajectoryViewMode === 'both') && (
-            <div className="w-full h-80 pt-2">
+            <div className="w-full h-80 pt-2 font-mono">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={trajectoryChartData}
@@ -515,19 +515,20 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                   <XAxis
                     dataKey="time"
                     stroke="var(--text-secondary)"
-                    tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                    tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                     label={{
                       value: 'Time t (min)',
                       position: 'insideBottom',
                       offset: -16,
                       fill: 'var(--text-secondary)',
                       fontSize: 12,
+                      fontFamily: 'var(--font-ui)',
                     }}
                   />
                   <YAxis
                     domain={isEndRegionZoomed ? ['auto', 'auto'] : [200, 'auto']}
                     stroke="var(--text-secondary)"
-                    tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                    tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                     label={{
                       value: 'Volume V (L)',
                       angle: -90,
@@ -535,6 +536,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                       offset: -2,
                       fill: 'var(--text-secondary)',
                       fontSize: 12,
+                      fontFamily: 'var(--font-ui)',
                     }}
                   />
                   <Tooltip content={<CustomGraphTooltip />} />
@@ -588,16 +590,16 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
 
           {/* Sub-Chart: Difference from Reference V_num - V_ref */}
           {(trajectoryViewMode === 'difference' || trajectoryViewMode === 'both') && (
-            <div className="pt-4 border-t border-[var(--border)] space-y-2">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-xs text-[var(--text-primary)]">
+            <div className="pt-4 border-t border-[var(--border)] space-y-2 font-sans">
+              <div className="flex justify-between items-center text-[12px]">
+                <span className="font-semibold text-[13px] text-[var(--text-primary)]">
                   Difference from Reference (V_method − V_ref in Liters):
                 </span>
-                <span className="text-[11px] text-[var(--text-muted)]">
+                <span className="text-[12px] text-[var(--text-muted)]">
                   Positive values indicate numerical overshoot
                 </span>
               </div>
-              <div className="w-full h-52">
+              <div className="w-full h-52 font-mono">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={trajectoryChartData}
@@ -607,18 +609,19 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                     <XAxis
                       dataKey="time"
                       stroke="var(--text-secondary)"
-                      tick={{ fontSize: 11, fill: 'var(--text-secondary)' }}
+                      tick={{ fontSize: 11, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                       label={{
                         value: 'Time t (min)',
                         position: 'insideBottom',
                         offset: -14,
                         fill: 'var(--text-secondary)',
                         fontSize: 11,
+                        fontFamily: 'var(--font-ui)',
                       }}
                     />
                     <YAxis
                       stroke="var(--text-secondary)"
-                      tick={{ fontSize: 11, fill: 'var(--text-secondary)' }}
+                      tick={{ fontSize: 11, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                       label={{
                         value: 'ΔV (L)',
                         angle: -90,
@@ -626,6 +629,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                         offset: -2,
                         fill: 'var(--text-secondary)',
                         fontSize: 11,
+                        fontFamily: 'var(--font-ui)',
                       }}
                     />
                     <Tooltip content={<CustomGraphTooltip />} />
@@ -672,19 +676,19 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
 
       {/* TAB 2: TRUNCATION ERROR ACCUMULATION */}
       {activeTab === 'error_time' && (
-        <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4">
+        <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4 font-sans">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[var(--border)]">
             <div>
-              <span className="font-bold text-sm text-[var(--text-primary)]">
+              <span className="font-bold text-[15px] sm:text-[16px] text-[var(--text-primary)] leading-[1.25]">
                 Local &amp; Global Absolute Truncation Error |e(t)| vs Time
               </span>
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1 font-mono tabular-nums">
                 Max Euler Error: {formatErrorSci(euler.maxAbsError)} L · Max Heun: {formatErrorSci(modEuler.maxAbsError)} L · Max RK4: {formatErrorSci(rk4.maxAbsError)} L
               </p>
             </div>
 
             {/* Log / Linear Toggle */}
-            <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-xs">
+            <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-[12px]">
               <button
                 onClick={() => setErrorScaleType('log')}
                 className={`px-2.5 py-1 rounded-md font-semibold transition cursor-pointer ${
@@ -708,7 +712,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
             </div>
           </div>
 
-          <div className="w-full h-80 pt-2">
+          <div className="w-full h-80 pt-2 font-mono">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={fullTrajectoryData}
@@ -718,20 +722,21 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                 <XAxis
                   dataKey="time"
                   stroke="var(--text-secondary)"
-                  tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                  tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                   label={{
                     value: 'Time t (min)',
                     position: 'insideBottom',
                     offset: -16,
                     fill: 'var(--text-secondary)',
                     fontSize: 12,
+                    fontFamily: 'var(--font-ui)',
                   }}
                 />
                 <YAxis
                   scale={errorScaleType === 'log' ? 'log' : 'linear'}
                   domain={errorScaleType === 'log' ? [1e-12, 10] : [0, 'auto']}
                   stroke="var(--text-secondary)"
-                  tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                  tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                   tickFormatter={(v) => {
                     if (errorScaleType === 'log') {
                       if (v <= 1e-11) return '1e-12';
@@ -746,6 +751,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                     offset: -2,
                     fill: 'var(--text-secondary)',
                     fontSize: 12,
+                    fontFamily: 'var(--font-ui)',
                   }}
                 />
                 <Tooltip content={<CustomGraphTooltip />} />
@@ -783,22 +789,22 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
 
       {/* TAB 3: ORDER OF CONVERGENCE O(h^p) */}
       {activeTab === 'order_h' && (
-        <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4">
+        <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4 font-sans">
           <div className="flex justify-between items-center pb-2 border-b border-[var(--border)]">
             <div>
-              <span className="font-bold text-sm text-[var(--text-primary)]">
+              <span className="font-bold text-[15px] sm:text-[16px] text-[var(--text-primary)] leading-[1.25]">
                 Order of Convergence Scaling: Max Error vs Step Size h (Log-Log Plot)
               </span>
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1 font-mono tabular-nums">
                 Slope p proves the order of convergence: Euler p ≈ 1.00, Heun p ≈ 2.00, RK4 p ≈ 4.00.
               </p>
             </div>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">
+            <span className="px-3 py-1 rounded-full text-[12px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">
               Fitted Slopes Validated
             </span>
           </div>
 
-          <div className="w-full h-80 pt-2">
+          <div className="w-full h-80 pt-2 font-mono">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={orderHData}
@@ -808,20 +814,21 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                 <XAxis
                   dataKey="h"
                   stroke="var(--text-secondary)"
-                  tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                  tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                   label={{
                     value: 'Step Size h (min)',
                     position: 'insideBottom',
                     offset: -16,
                     fill: 'var(--text-secondary)',
                     fontSize: 12,
+                    fontFamily: 'var(--font-ui)',
                   }}
                 />
                 <YAxis
                   scale="log"
                   domain={[1e-8, 20]}
                   stroke="var(--text-secondary)"
-                  tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                  tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                   tickFormatter={(v) => v.toExponential(0)}
                   label={{
                     value: 'Max Truncation Error (L)',
@@ -830,6 +837,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                     offset: -2,
                     fill: 'var(--text-secondary)',
                     fontSize: 12,
+                    fontFamily: 'var(--font-ui)',
                   }}
                 />
                 <Tooltip content={<CustomGraphTooltip />} />
@@ -867,27 +875,27 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
 
       {/* TAB 4: SAWTOOTH HYSTERESIS */}
       {activeTab === 'sawtooth' && (
-        <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4">
+        <div className="card-surface p-5 sm:p-6 rounded-xl border border-[var(--border)] shadow-md space-y-4 font-sans">
           <div className="flex justify-between items-center pb-2 border-b border-[var(--border)]">
             <div>
-              <span className="font-bold text-sm text-[var(--text-primary)]">
+              <span className="font-bold text-[15px] sm:text-[16px] text-[var(--text-primary)] leading-[1.25]">
                 180-Minute SCADA Hysteresis Cycle: Sawtooth Level Trajectory
               </span>
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1 font-mono tabular-nums">
                 Cycle period: ~145.8 min · Filling Phase: 200 L → 900 L · Draining Phase: 900 L → 200 L
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-500/10 text-blue-500 border border-blue-500/30">
+              <span className="px-2.5 py-1 rounded-md text-[12px] font-semibold bg-blue-500/10 text-blue-500 border border-blue-500/30">
                 Pump ON: &lt; 200 L
               </span>
-              <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/30">
+              <span className="px-2.5 py-1 rounded-md text-[12px] font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/30">
                 Pump OFF: &gt; 900 L
               </span>
             </div>
           </div>
 
-          <div className="w-full h-80 pt-2">
+          <div className="w-full h-80 pt-2 font-mono">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={sawtoothData}
@@ -897,19 +905,20 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                 <XAxis
                   dataKey="time"
                   stroke="var(--text-secondary)"
-                  tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                  tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                   label={{
                     value: 'Simulation Time (min)',
                     position: 'insideBottom',
                     offset: -16,
                     fill: 'var(--text-secondary)',
                     fontSize: 12,
+                    fontFamily: 'var(--font-ui)',
                   }}
                 />
                 <YAxis
                   domain={[0, 1000]}
                   stroke="var(--text-secondary)"
-                  tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                  tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                   label={{
                     value: 'Tank Volume V (L)',
                     angle: -90,
@@ -917,6 +926,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                     offset: -2,
                     fill: 'var(--text-secondary)',
                     fontSize: 12,
+                    fontFamily: 'var(--font-ui)',
                   }}
                 />
                 <Tooltip content={<CustomGraphTooltip />} />
@@ -930,6 +940,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                     value: 'High Pump-OFF Threshold (900 L)',
                     fill: '#ef4444',
                     fontSize: 11,
+                    fontFamily: 'var(--font-mono)',
                     position: 'top',
                   }}
                 />
@@ -941,6 +952,7 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
                     value: 'Low Pump-ON Threshold (200 L)',
                     fill: '#f59e0b',
                     fontSize: 11,
+                    fontFamily: 'var(--font-mono)',
                     position: 'top',
                   }}
                 />
@@ -961,8 +973,8 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
       )}
 
       {/* New: Key Insights Row (Filled bottom space with 4 computed cards) */}
-      <div className="space-y-3">
-        <h4 className="font-semibold text-sm text-[var(--text-primary)] flex items-center gap-2">
+      <div className="space-y-3 font-sans">
+        <h4 className="font-semibold text-[17px] sm:text-[18px] text-[var(--text-primary)] leading-[1.25] flex items-center gap-2">
           <Activity className="w-4 h-4 text-[var(--accent)]" /> Computational Insights &amp; Convergence Dynamics
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -976,13 +988,13 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
               className="card-surface p-4 rounded-xl border border-[var(--border)] hover:border-[var(--accent)] shadow-sm space-y-2 cursor-pointer transition-all hover:scale-101"
             >
               <div className="flex justify-between items-center">
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${card.badgeColor}`}>
+                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${card.badgeColor}`}>
                   {card.badge}
                 </span>
                 <ArrowRight className="w-3.5 h-3.5 text-[var(--text-muted)]" />
               </div>
-              <div className="font-bold text-xs text-[var(--text-primary)]">{card.title}</div>
-              <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed">{card.desc}</p>
+              <div className="font-bold text-[13px] text-[var(--text-primary)] leading-[1.3]">{card.title}</div>
+              <p className="text-[12px] text-[var(--text-secondary)] leading-[1.4]">{card.desc}</p>
             </div>
           ))}
         </div>
@@ -990,3 +1002,5 @@ export const GraphsSection: React.FC<GraphsSectionProps> = ({
     </div>
   );
 };
+
+export const GraphsSection = React.memo(GraphsSectionComponent);

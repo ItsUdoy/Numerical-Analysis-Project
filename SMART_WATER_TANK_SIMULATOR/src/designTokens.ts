@@ -86,13 +86,28 @@ export const tokens = {
     8: '32px',
   },
 
-  // Typography
+  // Typography & Font System
+  fonts: {
+    ui: "var(--font-ui)",
+    mono: "var(--font-mono)",
+  },
   typography: {
     base: '14px',
     label: '13px',
     tertiary: '12px',
     largeNumber: '34px',
-    unit: '16px',
+    unit: '14px',
+    lineHeight: {
+      body: 1.5,
+      heading: 1.25,
+      bigNumber: 1.1,
+    },
+    letterSpacing: {
+      label: '0.02em',
+      badge: '0.06em',
+      rowLabel: '0.01em',
+      bigNumber: '-0.02em',
+    },
   },
 } as const;
 

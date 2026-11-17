@@ -46,7 +46,7 @@ interface PredictionSectionProps {
   baseOdeParams: ODEModelParams;
 }
 
-export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdeParams }) => {
+export const PredictionSectionComponent: React.FC<PredictionSectionProps> = ({ baseOdeParams }) => {
   const [targetVol, setTargetVol] = useState<number>(500);
   const [scenario, setScenario] = useState<'filling' | 'draining'>('filling');
   const [modelType, setModelType] = useState<'torricelli' | 'linear'>('torricelli');
@@ -361,10 +361,10 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
   const CustomPredictionTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload || !payload.length) return null;
     return (
-      <div className="bg-[var(--bg-surface)] border border-[var(--border-strong)] rounded-xl p-3 shadow-xl text-xs space-y-2 backdrop-blur-md min-w-[220px]">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-strong)] rounded-xl p-3 shadow-xl text-[12px] space-y-2 backdrop-blur-md min-w-[220px]">
         <div className="font-semibold text-[var(--text-primary)] border-b border-[var(--border)] pb-1 flex items-center justify-between">
-          <span>Iteration k = {label}</span>
-          <span className="text-[10px] text-[var(--text-muted)] font-mono">ε = {tolerance}</span>
+          <span className="font-sans text-[12px]">Iteration k = {label}</span>
+          <span className="text-[11px] text-[var(--text-muted)] font-mono tabular-nums">ε = {tolerance}</span>
         </div>
         {payload.map((item: any, idx: number) => {
           if (item.value === undefined || item.value === null) return null;
@@ -376,19 +376,19 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
             <div key={idx} className="flex items-center justify-between gap-4 py-0.5">
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
-                <span className="text-[var(--text-secondary)] font-medium">
+                <span className="text-[var(--text-secondary)] font-medium text-[12px] font-sans">
                   {item.name || item.dataKey}:
                 </span>
               </div>
               <div className="text-right font-mono tabular-nums">
-                <div className="text-[var(--text-primary)] font-semibold flex items-center justify-end gap-1">
+                <div className="text-[var(--text-primary)] font-semibold text-[12px] flex items-center justify-end gap-1">
                   {item.value <= ERROR_FLOOR ? '< 1e-12' : item.value.toExponential(2)}
                   {isFinal && (
                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" title="Converged" />
                   )}
                 </div>
                 {xVal !== undefined && (
-                  <div className="text-[10px] text-[var(--text-muted)]">
+                  <div className="text-[11px] text-[var(--text-muted)] font-mono tabular-nums">
                     t = {Number(xVal).toFixed(3)} min
                   </div>
                 )}
@@ -406,16 +406,16 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
       <div className="card-surface p-6 rounded-xl border border-[var(--border)] shadow-md space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
           <div>
-            <h3 className="font-semibold text-base text-[var(--text-primary)] flex items-center gap-2">
+            <h3 className="font-semibold text-[17px] sm:text-[18px] text-[var(--text-primary)] leading-[1.25] flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-[var(--accent)]" /> Water Level Arrival Horizon Prediction
             </h3>
-            <p className="text-[var(--text-secondary)] text-xs mt-0.5">
+            <p className="text-[var(--text-secondary)] text-[13px] leading-[1.5] mt-1 font-normal">
               High-precision root-finding engine solving g(t) = V(t) − V_tgt = 0 to pinpoint exact arrival time.
             </p>
           </div>
           <button
             onClick={handleExportAll}
-            className="px-3.5 py-2 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] font-semibold text-xs flex items-center gap-1.5 transition shadow-sm self-start sm:self-auto cursor-pointer"
+            className="px-3.5 py-2 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] font-semibold text-[13px] flex items-center gap-1.5 transition shadow-sm self-start sm:self-auto cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export Comparison CSV</span>
@@ -425,11 +425,11 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-1">
           {/* Target Volume Slider & Presets */}
           <div className="space-y-2">
-            <div className="flex justify-between items-center text-xs">
-              <label className="text-[var(--text-secondary)] font-medium flex items-center gap-1">
+            <div className="flex justify-between items-center text-[13px]">
+              <label className="text-[var(--text-secondary)] font-semibold tracking-[0.02em] flex items-center gap-1">
                 <Sliders className="w-3.5 h-3.5 text-[var(--accent)]" /> Target Volume:
               </label>
-              <span className="px-2 py-0.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] font-bold font-mono">
+              <span className="px-2 py-0.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] font-bold font-mono text-[13px] tabular-nums">
                 {targetVol} L
               </span>
             </div>
@@ -447,7 +447,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                 }}
                 className="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
               />
-              <div className="flex justify-between text-[10px] text-[var(--text-muted)] font-mono mt-1">
+              <div className="flex justify-between text-[11px] sm:text-[12px] text-[var(--text-muted)] font-mono tabular-nums mt-1">
                 <span>{sliderMin} L</span>
                 <span className="text-[var(--accent)] font-semibold">{targetVol} L</span>
                 <span>{sliderMax} L</span>
@@ -465,7 +465,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                       soundFx.playClick();
                       setTargetVol(v);
                     }}
-                    className={`flex-1 py-1.5 rounded-md text-xs font-semibold font-mono border transition-all cursor-pointer ${
+                    className={`flex-1 py-1.5 rounded-md text-[13px] font-bold font-mono tabular-nums border transition-all cursor-pointer ${
                       isActive
                         ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm scale-102'
                         : 'border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)]'
@@ -480,7 +480,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
 
           {/* Physical Scenario Segmented Control */}
           <div className="space-y-2">
-            <label className="block text-[var(--text-secondary)] text-xs font-medium">
+            <label className="block text-[var(--text-secondary)] text-[13px] font-semibold tracking-[0.02em]">
               Physical Scenario:
             </label>
             <div className="grid grid-cols-2 gap-2 p-1 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border)]">
@@ -490,7 +490,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   setScenario('filling');
                   setTargetVol(500);
                 }}
-                className={`py-2 px-2.5 rounded-lg text-xs font-semibold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                className={`py-2 px-2.5 rounded-lg text-[13px] font-semibold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
                   scenario === 'filling'
                     ? 'bg-[var(--accent)] text-white shadow-sm'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -500,7 +500,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   <ArrowUp className="w-3.5 h-3.5" />
                   <span>Filling</span>
                 </div>
-                <span className="text-[10px] font-normal opacity-90">200 L → {targetVol} L</span>
+                <span className="text-[11px] font-mono tabular-nums font-normal opacity-90">200 L → {targetVol} L</span>
               </button>
 
               <button
@@ -509,7 +509,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   setScenario('draining');
                   setTargetVol(300);
                 }}
-                className={`py-2 px-2.5 rounded-lg text-xs font-semibold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                className={`py-2 px-2.5 rounded-lg text-[13px] font-semibold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
                   scenario === 'draining'
                     ? 'bg-[var(--accent)] text-white shadow-sm'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -519,17 +519,17 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   <ArrowDown className="w-3.5 h-3.5" />
                   <span>Draining</span>
                 </div>
-                <span className="text-[10px] font-normal opacity-90">900 L → {targetVol} L</span>
+                <span className="text-[11px] font-mono tabular-nums font-normal opacity-90">900 L → {targetVol} L</span>
               </button>
             </div>
-            <p className="text-[11px] text-[var(--text-muted)] text-center">
+            <p className="text-[12px] text-[var(--text-muted)] text-center leading-[1.4]">
               {scenario === 'filling' ? 'Pump inflow: 20 L/min · Start: 200 L' : 'Gravity outflow: Torricelli · Start: 900 L'}
             </p>
           </div>
 
           {/* Governing ODE Model */}
           <div className="space-y-2">
-            <label className="block text-[var(--text-secondary)] text-xs font-medium">
+            <label className="block text-[var(--text-secondary)] text-[13px] font-semibold tracking-[0.02em]">
               Governing Model:
             </label>
             <select
@@ -538,19 +538,19 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                 soundFx.playClick();
                 setModelType(e.target.value as any);
               }}
-              className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)] rounded-lg p-2.5 text-xs text-[var(--text-primary)] outline-none cursor-pointer"
+              className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)] rounded-lg p-2.5 text-[13px] font-medium text-[var(--text-primary)] outline-none cursor-pointer"
             >
               <option value="torricelli">Torricelli Non-Linear (k√V)</option>
               <option value="linear">Linear Model (dV/dt = const)</option>
             </select>
-            <p className="text-[11px] text-[var(--text-muted)]">
+            <p className="text-[12px] text-[var(--text-muted)] leading-[1.4]">
               {modelType === 'torricelli' ? 'Physics-accurate gravity orifice outflow' : 'Constant nominal net discharge rate'}
             </p>
           </div>
 
           {/* Tolerance ε */}
           <div className="space-y-2">
-            <label className="block text-[var(--text-secondary)] text-xs font-medium">
+            <label className="block text-[var(--text-secondary)] text-[13px] font-semibold tracking-[0.02em]">
               Convergence Tolerance (ε):
             </label>
             <select
@@ -559,13 +559,13 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                 soundFx.playClick();
                 setTolerance(Number(e.target.value));
               }}
-              className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)] rounded-lg p-2.5 text-xs text-[var(--text-primary)] outline-none font-mono cursor-pointer"
+              className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)] rounded-lg p-2.5 text-[13px] text-[var(--text-primary)] outline-none font-mono tabular-nums cursor-pointer"
             >
               <option value="0.001">10⁻³ min (~0.06 s - Fast)</option>
               <option value="0.0001">10⁻⁴ min (~0.006 s - Standard)</option>
               <option value="0.000001">10⁻⁶ min (High Precision)</option>
             </select>
-            <p className="text-[11px] text-[var(--text-muted)]">
+            <p className="text-[12px] text-[var(--text-muted)] leading-[1.4]">
               Stops when error |Δx| &lt; ε or residue |g(t)| &lt; ε
             </p>
           </div>
@@ -573,7 +573,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
 
         {/* Reachability Alert Banner if Target is Unreachable */}
         {reachabilityIssue && (
-          <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-[var(--warning)]/10 border border-[var(--warning)]/30 text-[var(--warning)] text-xs animate-pulse">
+          <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-[var(--warning)]/10 border border-[var(--warning)]/30 text-[var(--warning)] text-[13px] animate-pulse">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <div className="flex-1 font-medium">{reachabilityIssue}</div>
           </div>
@@ -586,23 +586,23 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="space-y-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-2 py-0.5 rounded-md text-[11px] font-bold tracking-wide uppercase bg-[var(--accent)]/15 text-[var(--accent)] border border-[var(--accent)]/30">
+                <span className="px-2.5 py-1 rounded-md text-[11px] sm:text-[12px] font-bold tracking-[0.06em] uppercase bg-[var(--accent)]/15 text-[var(--accent)] border border-[var(--accent)]/30">
                   {scenario === 'filling' ? 'Filling Horizon' : 'Draining Horizon'}
                 </span>
-                <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)]">
+                <h4 className="text-[18px] sm:text-[20px] font-bold text-[var(--text-primary)] leading-[1.25]">
                   Tank reaches {targetVol} L in about {headlineData.mins} min {headlineData.secs} s{' '}
                   <span className="text-[var(--text-secondary)] font-normal">
                     (at {headlineData.clockStr})
                   </span>
                 </h4>
               </div>
-              <p className="text-xs text-[var(--text-secondary)]">
-                Net arrival time: <span className="font-mono font-semibold text-[var(--text-primary)]">{headlineData.bestRoot.toFixed(3)} min</span> ({Math.round(headlineData.bestRoot * 60)} seconds) · {scenario === 'filling' ? 'Starting at 200 L' : 'Starting at 900 L'}
+              <p className="text-[13px] text-[var(--text-secondary)] leading-[1.5]">
+                Net arrival time: <span className="font-mono font-semibold text-[13px] text-[var(--text-primary)] tabular-nums">{headlineData.bestRoot.toFixed(3)} min</span> ({Math.round(headlineData.bestRoot * 60)} seconds) · {scenario === 'filling' ? 'Starting at 200 L' : 'Starting at 900 L'}
               </p>
             </div>
 
             <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
-              <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border ${
+              <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-semibold border ${
                 headlineData.isAgreement
                   ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/25'
                   : 'bg-amber-500/10 text-amber-500 border-amber-500/25'
@@ -627,14 +627,14 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                <span className="font-bold text-sm text-[var(--text-primary)]">1. Bisection Method</span>
+                <span className="font-bold text-[15px] text-[var(--text-primary)]">1. Bisection Method</span>
               </div>
               {fastestMethod === 'Bisection' ? (
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-full text-[11px] sm:text-[12px] font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 flex items-center gap-1">
                   <Zap className="w-3 h-3" /> Fastest ({bisectionRes.iterations.length} iters)
                 </span>
               ) : (
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/25">
+                <span className="px-2 py-0.5 rounded-md text-[11px] sm:text-[12px] font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/25">
                   Linear Order O(1)
                 </span>
               )}
@@ -642,18 +642,18 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
 
             {/* Row 1: Predicted Time */}
             <div>
-              <div className="text-3xl font-extrabold text-[var(--text-primary)] font-mono tabular-nums">
+              <div className="text-[34px] leading-[1.1] tracking-[-0.02em] font-bold text-[var(--text-primary)] font-mono tabular-nums">
                 {bisectionRes.root !== null ? (
                   <>
                     {bisectionRes.root.toFixed(3)}{' '}
-                    <span className="text-base font-normal text-[var(--text-secondary)]">min</span>
+                    <span className="text-[14px] font-medium font-sans text-[var(--text-secondary)]">min</span>
                   </>
                 ) : (
                   <span className="text-rose-500 text-xl">Failed</span>
                 )}
               </div>
               {bisectionRes.root !== null && (
-                <div className="text-[11px] text-[var(--text-muted)] font-mono mt-0.5">
+                <div className="text-[12px] text-[var(--text-muted)] font-mono tabular-nums mt-1">
                   ≈ {Math.floor(bisectionRes.root)}m {Math.round((bisectionRes.root % 1) * 60)}s
                 </div>
               )}
@@ -661,38 +661,38 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
           </div>
 
           {/* Row 2 to 5: Standardized Metric Rows */}
-          <div className="space-y-2 text-xs border-t border-[var(--border)] pt-3 text-[var(--text-secondary)]">
+          <div className="space-y-2.5 border-t border-[var(--border)] pt-3 text-[var(--text-secondary)]">
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Required Iterations:</span>
-              <span className="font-bold font-mono text-amber-500">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Required Iterations:</span>
+              <span className="font-bold font-mono text-[13px] tabular-nums text-amber-500">
                 {bisectionRes.iterations.length} iters
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Theoretical Steps:</span>
-              <span className="font-mono text-[var(--text-primary)] text-[11px]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Theoretical Steps:</span>
+              <span className="font-mono text-[var(--text-primary)] text-[12px] tabular-nums">
                 ⌈log₂((b−a)/ε)⌉ = {theoreticalBisectionSteps}
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Final Residue |g(t*)|:</span>
-              <span className="font-mono text-[var(--text-primary)]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Final Residue |g(t*)|:</span>
+              <span className="font-mono font-medium text-[13px] tabular-nums text-[var(--text-primary)]">
                 {formatResidue(bisectionRes.root)}
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Evaluations / Time:</span>
-              <span className="font-mono text-[var(--text-primary)]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Evaluations / Time:</span>
+              <span className="font-mono font-medium text-[13px] tabular-nums text-[var(--text-primary)]">
                 {evalCounts.bisection} evals · {formatExecTime(bisectionRes.executionTimeMs)}
               </span>
             </div>
 
             <div className="relative flex justify-between items-center pt-1 border-t border-[var(--border)]/50">
-              <div className="flex items-center gap-1 text-[var(--text-muted)]">
-                <span>Mechanism:</span>
+              <div className="flex items-center gap-1 text-[var(--text-secondary)]">
+                <span className="font-normal text-[13px] tracking-[0.01em]">Mechanism:</span>
                 <button
                   type="button"
                   onClick={() => setActiveTooltip(activeTooltip === 'bisection' ? null : 'bisection')}
@@ -702,10 +702,10 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   <HelpCircle className="w-3.5 h-3.5" />
                 </button>
               </div>
-              <span className="font-medium text-[var(--text-primary)]">Interval Halving</span>
+              <span className="font-semibold text-[13px] text-[var(--text-primary)]">Interval Halving</span>
 
               {activeTooltip === 'bisection' && (
-                <div className="absolute bottom-7 left-0 right-0 p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-strong)] text-[11px] text-[var(--text-secondary)] shadow-xl z-20">
+                <div className="absolute bottom-7 left-0 right-0 p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-strong)] text-[12px] leading-[1.4] text-[var(--text-secondary)] shadow-xl z-20">
                   Guaranteed convergence by halving bracket [a, b] each step. Never diverges, but slowest rate.
                 </div>
               )}
@@ -719,14 +719,14 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-sm bg-cyan-500" />
-                <span className="font-bold text-sm text-[var(--text-primary)]">2. False Position</span>
+                <span className="font-bold text-[15px] text-[var(--text-primary)]">2. False Position</span>
               </div>
               {fastestMethod === 'False Position' ? (
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-full text-[11px] sm:text-[12px] font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 flex items-center gap-1">
                   <Zap className="w-3 h-3" /> Fastest ({falsePosRes.iterations.length} iters)
                 </span>
               ) : (
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-cyan-500/10 text-cyan-500 border border-cyan-500/25">
+                <span className="px-2 py-0.5 rounded-md text-[11px] sm:text-[12px] font-semibold bg-cyan-500/10 text-cyan-500 border border-cyan-500/25">
                   Superlinear O(1.618)
                 </span>
               )}
@@ -734,18 +734,18 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
 
             {/* Row 1: Predicted Time */}
             <div>
-              <div className="text-3xl font-extrabold text-[var(--text-primary)] font-mono tabular-nums">
+              <div className="text-[34px] leading-[1.1] tracking-[-0.02em] font-bold text-[var(--text-primary)] font-mono tabular-nums">
                 {falsePosRes.root !== null ? (
                   <>
                     {falsePosRes.root.toFixed(3)}{' '}
-                    <span className="text-base font-normal text-[var(--text-secondary)]">min</span>
+                    <span className="text-[14px] font-medium font-sans text-[var(--text-secondary)]">min</span>
                   </>
                 ) : (
                   <span className="text-rose-500 text-xl">Failed</span>
                 )}
               </div>
               {falsePosRes.root !== null && (
-                <div className="text-[11px] text-[var(--text-muted)] font-mono mt-0.5">
+                <div className="text-[12px] text-[var(--text-muted)] font-mono tabular-nums mt-1">
                   ≈ {Math.floor(falsePosRes.root)}m {Math.round((falsePosRes.root % 1) * 60)}s
                 </div>
               )}
@@ -753,38 +753,38 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
           </div>
 
           {/* Row 2 to 5: Standardized Metric Rows */}
-          <div className="space-y-2 text-xs border-t border-[var(--border)] pt-3 text-[var(--text-secondary)]">
+          <div className="space-y-2.5 border-t border-[var(--border)] pt-3 text-[var(--text-secondary)]">
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Required Iterations:</span>
-              <span className="font-bold font-mono text-cyan-500">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Required Iterations:</span>
+              <span className="font-bold font-mono text-[13px] tabular-nums text-cyan-500">
                 {falsePosRes.iterations.length} iters
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Stagnation Notice:</span>
-              <span className="font-mono text-[var(--text-primary)] text-[11px]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Stagnation Notice:</span>
+              <span className="font-mono text-[var(--text-primary)] text-[12px]">
                 One-sided endpoint lock
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Final Residue |g(t*)|:</span>
-              <span className="font-mono text-[var(--text-primary)]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Final Residue |g(t*)|:</span>
+              <span className="font-mono font-medium text-[13px] tabular-nums text-[var(--text-primary)]">
                 {formatResidue(falsePosRes.root)}
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Evaluations / Time:</span>
-              <span className="font-mono text-[var(--text-primary)]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Evaluations / Time:</span>
+              <span className="font-mono font-medium text-[13px] tabular-nums text-[var(--text-primary)]">
                 {evalCounts.falsePosition} evals · {formatExecTime(falsePosRes.executionTimeMs)}
               </span>
             </div>
 
             <div className="relative flex justify-between items-center pt-1 border-t border-[var(--border)]/50">
-              <div className="flex items-center gap-1 text-[var(--text-muted)]">
-                <span>Mechanism:</span>
+              <div className="flex items-center gap-1 text-[var(--text-secondary)]">
+                <span className="font-normal text-[13px] tracking-[0.01em]">Mechanism:</span>
                 <button
                   type="button"
                   onClick={() => setActiveTooltip(activeTooltip === 'falsePosition' ? null : 'falsePosition')}
@@ -794,10 +794,10 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   <HelpCircle className="w-3.5 h-3.5" />
                 </button>
               </div>
-              <span className="font-medium text-[var(--text-primary)]">Secant Interpolation</span>
+              <span className="font-semibold text-[13px] text-[var(--text-primary)]">Secant Interpolation</span>
 
               {activeTooltip === 'falsePosition' && (
-                <div className="absolute bottom-7 left-0 right-0 p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-strong)] text-[11px] text-[var(--text-secondary)] shadow-xl z-20">
+                <div className="absolute bottom-7 left-0 right-0 p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-strong)] text-[12px] leading-[1.4] text-[var(--text-secondary)] shadow-xl z-20">
                   Draws a secant chord between brackets. Faster than bisection, but can lock on one stagnant endpoint.
                 </div>
               )}
@@ -811,14 +811,14 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rotate-45 bg-emerald-500" />
-                <span className="font-bold text-sm text-[var(--text-primary)]">3. Newton-Raphson</span>
+                <span className="font-bold text-[15px] text-[var(--text-primary)]">3. Newton-Raphson</span>
               </div>
               {fastestMethod === 'Newton-Raphson' ? (
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 flex items-center gap-1 shadow-sm">
+                <span className="px-2 py-0.5 rounded-full text-[11px] sm:text-[12px] font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 flex items-center gap-1 shadow-sm">
                   <Zap className="w-3 h-3 text-emerald-500 fill-emerald-500" /> Fastest ({newtonRes.iterations.length} iters)
                 </span>
               ) : (
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/25">
+                <span className="px-2 py-0.5 rounded-md text-[11px] sm:text-[12px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/25">
                   Quadratic Order O(2)
                 </span>
               )}
@@ -826,18 +826,18 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
 
             {/* Row 1: Predicted Time */}
             <div>
-              <div className="text-3xl font-extrabold text-[var(--text-primary)] font-mono tabular-nums">
+              <div className="text-[34px] leading-[1.1] tracking-[-0.02em] font-bold text-[var(--text-primary)] font-mono tabular-nums">
                 {newtonRes.root !== null ? (
                   <>
                     {newtonRes.root.toFixed(3)}{' '}
-                    <span className="text-base font-normal text-[var(--text-secondary)]">min</span>
+                    <span className="text-[14px] font-medium font-sans text-[var(--text-secondary)]">min</span>
                   </>
                 ) : (
                   <span className="text-rose-500 text-xl">Failed</span>
                 )}
               </div>
               {newtonRes.root !== null && (
-                <div className="text-[11px] text-[var(--text-muted)] font-mono mt-0.5">
+                <div className="text-[12px] text-[var(--text-muted)] font-mono tabular-nums mt-1">
                   ≈ {Math.floor(newtonRes.root)}m {Math.round((newtonRes.root % 1) * 60)}s
                 </div>
               )}
@@ -845,38 +845,38 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
           </div>
 
           {/* Row 2 to 5: Standardized Metric Rows */}
-          <div className="space-y-2 text-xs border-t border-[var(--border)] pt-3 text-[var(--text-secondary)]">
+          <div className="space-y-2.5 border-t border-[var(--border)] pt-3 text-[var(--text-secondary)]">
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Required Iterations:</span>
-              <span className="font-bold font-mono text-emerald-500">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Required Iterations:</span>
+              <span className="font-bold font-mono text-[13px] tabular-nums text-emerald-500">
                 {newtonRes.iterations.length} iters
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Tangent Derivative:</span>
-              <span className="font-mono text-[var(--text-primary)] text-[11px]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Tangent Derivative:</span>
+              <span className="font-mono text-[var(--text-primary)] text-[12px]">
                 g'(t) = dV/dt (Net Flow)
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Final Residue |g(t*)|:</span>
-              <span className="font-mono text-[var(--text-primary)]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Final Residue |g(t*)|:</span>
+              <span className="font-mono font-medium text-[13px] tabular-nums text-[var(--text-primary)]">
                 {formatResidue(newtonRes.root)}
               </span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-[var(--text-muted)]">Evaluations / Time:</span>
-              <span className="font-mono text-[var(--text-primary)]">
+              <span className="text-[var(--text-secondary)] font-normal text-[13px] tracking-[0.01em]">Evaluations / Time:</span>
+              <span className="font-mono font-medium text-[13px] tabular-nums text-[var(--text-primary)]">
                 {evalCounts.newton} evals · {formatExecTime(newtonRes.executionTimeMs)}
               </span>
             </div>
 
             <div className="relative flex justify-between items-center pt-1 border-t border-[var(--border)]/50">
-              <div className="flex items-center gap-1 text-[var(--text-muted)]">
-                <span>Mechanism:</span>
+              <div className="flex items-center gap-1 text-[var(--text-secondary)]">
+                <span className="font-normal text-[13px] tracking-[0.01em]">Mechanism:</span>
                 <button
                   type="button"
                   onClick={() => setActiveTooltip(activeTooltip === 'newton' ? null : 'newton')}
@@ -886,10 +886,10 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   <HelpCircle className="w-3.5 h-3.5" />
                 </button>
               </div>
-              <span className="font-medium text-[var(--text-primary)]">Tangent Slope g'(t)</span>
+              <span className="font-semibold text-[13px] text-[var(--text-primary)]">Tangent Slope g'(t)</span>
 
               {activeTooltip === 'newton' && (
-                <div className="absolute bottom-7 left-0 right-0 p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-strong)] text-[11px] text-[var(--text-secondary)] shadow-xl z-20">
+                <div className="absolute bottom-7 left-0 right-0 p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-strong)] text-[12px] leading-[1.4] text-[var(--text-secondary)] shadow-xl z-20">
                   Projects tangent slope using instantaneous flow dV/dt. Doubles correct precision digits each step.
                 </div>
               )}
@@ -899,21 +899,21 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
       </div>
 
       {/* Interactive Convergence Speed Comparison Chart */}
-      <div className="card-surface rounded-xl border border-[var(--border)] p-5 sm:p-6 shadow-md space-y-4">
+      <div className="card-surface rounded-xl border border-[var(--border)] p-5 sm:p-6 shadow-md space-y-4 font-sans">
         {/* Chart Header & Controls */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[var(--border)]">
           <div>
-            <h4 className="font-semibold text-sm text-[var(--text-primary)] flex items-center gap-2">
+            <h4 className="font-semibold text-[15px] sm:text-[16px] text-[var(--text-primary)] leading-[1.25] flex items-center gap-2">
               <Layers className="w-4 h-4 text-[var(--accent)]" /> Convergence Speed Comparison (|Δx| vs Iteration)
             </h4>
-            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            <p className="text-[13px] text-[var(--text-secondary)] mt-0.5 leading-[1.5]">
               Newton-Raphson reached tolerance ε = {tolerance} in {newtonRes.iterations.length} iterations.
             </p>
           </div>
 
           <div className="flex items-center gap-2 self-start sm:self-auto">
             {/* Scale Toggle: Logarithmic vs Linear */}
-            <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-xs">
+            <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-[12px]">
               <button
                 onClick={() => {
                   soundFx.playClick();
@@ -945,8 +945,8 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
         </div>
 
         {/* Interactive Method Pills Legend (Placed Above Chart at Top-Left, no overlap with x-axis) */}
-        <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
-          <span className="text-[var(--text-muted)] text-[11px] font-medium mr-1">Toggle Series:</span>
+        <div className="flex flex-wrap items-center gap-2 pt-1 text-[12px]">
+          <span className="text-[var(--text-muted)] text-[12px] font-medium mr-1">Toggle Series:</span>
           <button
             onClick={() => toggleSeries('Bisection')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all cursor-pointer ${
@@ -985,7 +985,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
         </div>
 
         {/* Recharts LineChart */}
-        <div className="w-full h-80 pt-2">
+        <div className="w-full h-80 pt-2 font-mono">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={errorChartData}
@@ -999,20 +999,21 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
               <XAxis
                 dataKey="iteration"
                 stroke="var(--text-secondary)"
-                tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                 label={{
                   value: 'Iteration (k)',
                   position: 'insideBottom',
                   offset: -16,
                   fill: 'var(--text-secondary)',
                   fontSize: 12,
+                  fontFamily: 'var(--font-ui)',
                 }}
               />
               <YAxis
                 scale={scaleType === 'log' ? 'log' : 'linear'}
                 domain={scaleType === 'log' ? [1e-12, 100] : [0, 'auto']}
                 stroke="var(--text-secondary)"
-                tick={{ fontSize: 12, fill: 'var(--text-secondary)' }}
+                tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
                 tickFormatter={(v) => {
                   if (scaleType === 'log') {
                     if (v <= ERROR_FLOOR) return '1e-12';
@@ -1027,6 +1028,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   offset: -2,
                   fill: 'var(--text-secondary)',
                   fontSize: 12,
+                  fontFamily: 'var(--font-ui)',
                 }}
               />
               <Tooltip content={<CustomPredictionTooltip />} />
@@ -1040,6 +1042,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                   value: `Tolerance ε = ${tolerance}`,
                   fill: 'var(--warning)',
                   fontSize: 11,
+                  fontFamily: 'var(--font-mono)',
                   position: 'top',
                 }}
               />
@@ -1112,7 +1115,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
       </div>
 
       {/* New: Collapsible Iteration Details Table */}
-      <div className="card-surface rounded-xl border border-[var(--border)] overflow-hidden shadow-md">
+      <div className="card-surface rounded-xl border border-[var(--border)] overflow-hidden shadow-md font-sans">
         {/* Table Accordion Header */}
         <div className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[var(--bg-elevated)]/30 border-b border-[var(--border)]">
           <button
@@ -1120,7 +1123,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
               soundFx.playClick();
               setIsTableOpen(!isTableOpen);
             }}
-            className="flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)] hover:text-[var(--accent)] transition cursor-pointer text-left"
+            className="flex items-center gap-2 text-[14px] font-semibold text-[var(--text-primary)] hover:text-[var(--accent)] transition cursor-pointer text-left"
           >
             {isTableOpen ? (
               <ChevronUp className="w-4 h-4 text-[var(--accent)]" />
@@ -1133,7 +1136,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
           {isTableOpen && (
             <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
               {/* Method Switcher Tabs */}
-              <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-xs">
+              <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-[12px]">
                 <button
                   onClick={() => {
                     soundFx.playClick();
@@ -1178,7 +1181,7 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
               {/* Export Active Table CSV */}
               <button
                 onClick={handleExportActiveTable}
-                className="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
+                className="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] text-[12px] font-semibold flex items-center gap-1.5 transition cursor-pointer"
                 title="Download step data for this method"
               >
                 <Download className="w-3.5 h-3.5" />
@@ -1192,8 +1195,8 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
         {isTableOpen && (
           <div className="overflow-x-auto max-h-96 overflow-y-auto">
             {activeTableTab === 'newton' && (
-              <table className="w-full text-left text-xs border-collapse">
-                <thead className="sticky top-0 bg-[var(--bg-elevated)] border-b border-[var(--border)] z-10 text-[var(--text-secondary)]">
+              <table className="w-full text-left text-[12px] border-collapse">
+                <thead className="sticky top-0 bg-[var(--bg-elevated)] border-b border-[var(--border)] z-10 text-[var(--text-secondary)] font-sans">
                   <tr>
                     <th className="py-2.5 px-4 font-semibold">Step (k)</th>
                     <th className="py-2.5 px-4 font-semibold text-right">Estimate t_k (min)</th>
@@ -1217,24 +1220,24 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                             : 'bg-[var(--bg-elevated)]/25 hover:bg-[var(--bg-elevated)]/60'
                         }`}
                       >
-                        <td className="py-2 px-4 text-[var(--text-secondary)]">{it.iteration}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-primary)]">{it.x.toFixed(4)}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-secondary)]">
+                        <td className="py-2.5 px-4 text-[var(--text-secondary)]">{it.iteration}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-primary)]">{it.x.toFixed(4)}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-secondary)]">
                           {Math.abs(it.fx) < 1e-6 ? '< 1e-6' : it.fx.toExponential(4)}
                         </td>
-                        <td className="py-2 px-4 text-right text-[var(--text-secondary)]">
+                        <td className="py-2.5 px-4 text-right text-[var(--text-secondary)]">
                           {it.dfx !== undefined ? it.dfx.toFixed(4) : '—'}
                         </td>
-                        <td className="py-2 px-4 text-right text-[var(--text-primary)]">
+                        <td className="py-2.5 px-4 text-right text-[var(--text-primary)]">
                           {it.error <= ERROR_FLOOR ? '< 1e-12' : it.error.toExponential(4)}
                         </td>
-                        <td className="py-2 px-4 text-center">
+                        <td className="py-2.5 px-4 text-center font-sans">
                           {isFinal ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-500">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-500">
                               <CheckCircle2 className="w-3 h-3" /> Converged
                             </span>
                           ) : (
-                            <span className="text-[10px] text-[var(--text-muted)]">Iterating</span>
+                            <span className="text-[11px] text-[var(--text-muted)]">Iterating</span>
                           )}
                         </td>
                       </tr>
@@ -1245,8 +1248,8 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
             )}
 
             {activeTableTab === 'falsePosition' && (
-              <table className="w-full text-left text-xs border-collapse">
-                <thead className="sticky top-0 bg-[var(--bg-elevated)] border-b border-[var(--border)] z-10 text-[var(--text-secondary)]">
+              <table className="w-full text-left text-[12px] border-collapse">
+                <thead className="sticky top-0 bg-[var(--bg-elevated)] border-b border-[var(--border)] z-10 text-[var(--text-secondary)] font-sans">
                   <tr>
                     <th className="py-2.5 px-4 font-semibold">Step (k)</th>
                     <th className="py-2.5 px-4 font-semibold text-right">Lower a (min)</th>
@@ -1271,23 +1274,23 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                             : 'bg-[var(--bg-elevated)]/25 hover:bg-[var(--bg-elevated)]/60'
                         }`}
                       >
-                        <td className="py-2 px-4 text-[var(--text-secondary)]">{it.iteration}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-secondary)]">{it.a?.toFixed(4) ?? '—'}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-secondary)]">{it.b?.toFixed(4) ?? '—'}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-primary)]">{it.x.toFixed(4)}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-secondary)]">
+                        <td className="py-2.5 px-4 text-[var(--text-secondary)]">{it.iteration}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-secondary)]">{it.a?.toFixed(4) ?? '—'}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-secondary)]">{it.b?.toFixed(4) ?? '—'}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-primary)]">{it.x.toFixed(4)}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-secondary)]">
                           {Math.abs(it.fx) < 1e-6 ? '< 1e-6' : it.fx.toExponential(4)}
                         </td>
-                        <td className="py-2 px-4 text-right text-[var(--text-primary)]">
+                        <td className="py-2.5 px-4 text-right text-[var(--text-primary)]">
                           {it.error <= ERROR_FLOOR ? '< 1e-12' : it.error.toExponential(4)}
                         </td>
-                        <td className="py-2 px-4 text-center">
+                        <td className="py-2.5 px-4 text-center font-sans">
                           {isFinal ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-500">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-cyan-500/20 text-cyan-500">
                               <CheckCircle2 className="w-3 h-3" /> Converged
                             </span>
                           ) : (
-                            <span className="text-[10px] text-[var(--text-muted)]">Iterating</span>
+                            <span className="text-[11px] text-[var(--text-muted)]">Iterating</span>
                           )}
                         </td>
                       </tr>
@@ -1298,8 +1301,8 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
             )}
 
             {activeTableTab === 'bisection' && (
-              <table className="w-full text-left text-xs border-collapse">
-                <thead className="sticky top-0 bg-[var(--bg-elevated)] border-b border-[var(--border)] z-10 text-[var(--text-secondary)]">
+              <table className="w-full text-left text-[12px] border-collapse">
+                <thead className="sticky top-0 bg-[var(--bg-elevated)] border-b border-[var(--border)] z-10 text-[var(--text-secondary)] font-sans">
                   <tr>
                     <th className="py-2.5 px-4 font-semibold">Step (k)</th>
                     <th className="py-2.5 px-4 font-semibold text-right">Lower a (min)</th>
@@ -1324,23 +1327,23 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
                             : 'bg-[var(--bg-elevated)]/25 hover:bg-[var(--bg-elevated)]/60'
                         }`}
                       >
-                        <td className="py-2 px-4 text-[var(--text-secondary)]">{it.iteration}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-secondary)]">{it.a?.toFixed(4) ?? '—'}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-secondary)]">{it.b?.toFixed(4) ?? '—'}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-primary)]">{it.x.toFixed(4)}</td>
-                        <td className="py-2 px-4 text-right text-[var(--text-secondary)]">
+                        <td className="py-2.5 px-4 text-[var(--text-secondary)]">{it.iteration}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-secondary)]">{it.a?.toFixed(4) ?? '—'}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-secondary)]">{it.b?.toFixed(4) ?? '—'}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-primary)]">{it.x.toFixed(4)}</td>
+                        <td className="py-2.5 px-4 text-right text-[var(--text-secondary)]">
                           {Math.abs(it.fx) < 1e-6 ? '< 1e-6' : it.fx.toExponential(4)}
                         </td>
-                        <td className="py-2 px-4 text-right text-[var(--text-primary)]">
+                        <td className="py-2.5 px-4 text-right text-[var(--text-primary)]">
                           {it.error <= ERROR_FLOOR ? '< 1e-12' : it.error.toExponential(4)}
                         </td>
-                        <td className="py-2 px-4 text-center">
+                        <td className="py-2.5 px-4 text-center font-sans">
                           {isFinal ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-500">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-500">
                               <CheckCircle2 className="w-3 h-3" /> Converged
                             </span>
                           ) : (
-                            <span className="text-[10px] text-[var(--text-muted)]">Iterating</span>
+                            <span className="text-[11px] text-[var(--text-muted)]">Iterating</span>
                           )}
                         </td>
                       </tr>
@@ -1355,3 +1358,5 @@ export const PredictionSection: React.FC<PredictionSectionProps> = ({ baseOdePar
     </div>
   );
 };
+
+export const PredictionSection = React.memo(PredictionSectionComponent);

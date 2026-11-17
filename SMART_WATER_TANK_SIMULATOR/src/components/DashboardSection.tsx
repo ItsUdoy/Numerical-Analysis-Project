@@ -41,7 +41,7 @@ interface DashboardSectionProps {
   onNavigate: (section: any) => void;
 }
 
-export const DashboardSection: React.FC<DashboardSectionProps> = ({
+export const DashboardSectionComponent: React.FC<DashboardSectionProps> = ({
   liveTank,
   setLiveTank,
   settings,
@@ -138,14 +138,14 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Droplets className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                  <h3 className="font-semibold text-gray-900 dark:text-white">Water Level</h3>
+                  <h3 className="font-semibold text-[17px] sm:text-[18px] leading-[1.25] text-gray-900 dark:text-white">Water Level</h3>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-slate-400">
+                <p className="text-[13px] text-gray-500 dark:text-slate-400 leading-[1.5]">
                   SCADA Twin & Capacity Monitoring • Click / Drag to calibrate
                 </p>
               </div>
               <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-semibold ${
                   isCriticalLow
                     ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-300 dark:border-rose-800'
                     : isCriticalHigh
@@ -165,7 +165,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             {isCriticalLow && (
               <div
                 role="alert"
-                className="mt-3 p-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/60 text-rose-800 dark:text-rose-200 text-xs font-medium flex items-center gap-2"
+                className="mt-3 p-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/60 text-rose-800 dark:text-rose-200 text-[13px] font-medium leading-[1.5] flex items-center gap-2"
               >
                 <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 animate-bounce" />
                 <span>
@@ -176,7 +176,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             {isCriticalHigh && (
               <div
                 role="alert"
-                className="mt-3 p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/60 text-amber-800 dark:text-amber-200 text-xs font-medium flex items-center gap-2"
+                className="mt-3 p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/60 text-amber-800 dark:text-amber-200 text-[13px] font-medium leading-[1.5] flex items-center gap-2"
               >
                 <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
                 <span>
@@ -203,15 +203,15 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
               />
 
               {/* ETA Line under the tank */}
-              <div className="w-full mt-2 py-1.5 px-3 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-center text-xs font-medium text-gray-700 dark:text-slate-300 flex items-center justify-center gap-2">
+              <div className="w-full mt-2 py-1.5 px-3 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-center text-[12px] font-medium text-gray-700 dark:text-slate-300 flex items-center justify-center gap-2">
                 <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <span className="truncate">
-                  ETA: <strong className="text-gray-900 dark:text-white font-mono">{etaText}</strong>
+                  ETA: <strong className="text-gray-900 dark:text-white font-mono tabular-nums font-semibold">{etaText}</strong>
                 </span>
               </div>
 
               {/* Quick Jump Calibration Presets */}
-              <div className="grid grid-cols-4 gap-1.5 w-full mt-2 text-[10px] font-mono">
+              <div className="grid grid-cols-4 gap-1.5 w-full mt-2 text-[12px] font-mono font-semibold tabular-nums">
                 <button
                   onClick={() => setTankLevel(150)}
                   className="py-1 px-1 rounded-md border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900 hover:border-blue-500 text-gray-700 dark:text-slate-300 text-center transition"
@@ -246,8 +246,8 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             {/* Right: Telemetry & Simulation Controls (Moved outside of tank water area) */}
             <div className="sm:col-span-5 space-y-3.5 font-sans">
               <div>
-                <p className="text-xs text-gray-500 dark:text-slate-400 mb-0.5">Current Capacity</p>
-                <div className="text-3xl font-bold font-mono text-gray-900 dark:text-white">
+                <p className="text-[13px] text-gray-500 dark:text-slate-400 mb-0.5 font-medium tracking-[0.02em]">Current Capacity</p>
+                <div className="font-mono font-bold text-[34px] leading-[1.1] tracking-[-0.02em] tabular-nums text-gray-900 dark:text-white">
                   {percentage.toFixed(1)}%
                 </div>
                 <div className="w-full bg-gray-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden mt-1.5">
@@ -265,19 +265,19 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
               </div>
 
               <div>
-                <p className="text-xs text-gray-500 dark:text-slate-400 mb-0.5">Stored Fluid Volume</p>
-                <div className="text-lg font-semibold text-gray-900 dark:text-white font-mono">
+                <p className="text-[13px] text-gray-500 dark:text-slate-400 mb-0.5 font-medium tracking-[0.02em]">Stored Fluid Volume</p>
+                <div className="text-[16px] font-bold text-gray-900 dark:text-white font-mono tabular-nums">
                   {liveTank.volume.toFixed(1)} L{' '}
-                  <span className="text-xs font-normal text-gray-500 dark:text-slate-400">
+                  <span className="text-[13px] font-normal text-gray-500 dark:text-slate-400 font-sans">
                     / {liveTank.capacity} L
                   </span>
                 </div>
               </div>
 
               <div>
-                <p className="text-xs text-gray-500 dark:text-slate-400 mb-0.5">Net Dynamic Flow</p>
+                <p className="text-[13px] text-gray-500 dark:text-slate-400 mb-0.5 font-medium tracking-[0.02em]">Net Dynamic Flow</p>
                 <div
-                  className={`text-sm font-bold font-mono ${
+                  className={`text-[14px] font-bold font-mono tabular-nums ${
                     netFlow > 0
                       ? 'text-emerald-600 dark:text-emerald-400'
                       : netFlow < 0
@@ -292,9 +292,9 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
               {/* Pump & Valve Quick Badges */}
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <div className="p-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-center">
-                  <span className="text-[10px] text-gray-500 dark:text-slate-400 block font-semibold">PUMP</span>
+                  <span className="text-[11px] text-gray-500 dark:text-slate-400 block font-bold font-sans tracking-[0.04em] uppercase">PUMP</span>
                   <span
-                    className={`text-xs font-bold font-mono ${
+                    className={`text-[12px] font-bold font-mono ${
                       liveTank.pumpOn && liveTank.isRunning
                         ? 'text-emerald-600 dark:text-emerald-400'
                         : liveTank.pumpOn
@@ -306,9 +306,9 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                   </span>
                 </div>
                 <div className="p-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-center">
-                  <span className="text-[10px] text-gray-500 dark:text-slate-400 block font-semibold">VALVE</span>
+                  <span className="text-[11px] text-gray-500 dark:text-slate-400 block font-bold font-sans tracking-[0.04em] uppercase">VALVE</span>
                   <span
-                    className={`text-xs font-bold font-mono ${
+                    className={`text-[12px] font-bold font-mono ${
                       liveTank.pumpOn ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400'
                     }`}
                   >
@@ -324,7 +324,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                     soundFx.playClick();
                     setLiveTank((p) => ({ ...p, isRunning: !p.isRunning }));
                   }}
-                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition ${
+                  className={`flex-1 py-2 px-3 rounded-lg text-[13px] font-semibold flex items-center justify-center gap-1.5 transition ${
                     liveTank.isRunning
                       ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 hover:bg-amber-200'
                       : 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
@@ -349,12 +349,12 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
 
           {/* Compact Level-Over-Time Chart with Threshold Reference Lines */}
           <div className="mt-4 pt-3 border-t border-gray-200 dark:border-slate-800">
-            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 font-semibold mb-2">
+            <div className="flex items-center justify-between text-[13px] text-gray-500 dark:text-slate-400 font-semibold mb-2">
               <div className="flex items-center gap-1.5">
                 <TrendingUp className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                 <span>Level-Over-Time Horizon</span>
               </div>
-              <span className="font-mono text-[11px]">
+              <span className="font-mono text-[11px] sm:text-[12px] tabular-nums">
                 {chartData.length} Points • Band: {settings.pumpOnThreshold}L ↔ {settings.pumpOffThreshold}L
               </span>
             </div>
@@ -369,13 +369,13 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                     </linearGradient>
                   </defs>
                   <XAxis dataKey="time" hide />
-                  <YAxis domain={[0, liveTank.capacity]} tick={{ fontSize: 10, fill: '#64748b' }} />
+                  <YAxis domain={[0, liveTank.capacity]} tick={{ fontSize: 11, fill: '#64748b', fontFamily: 'var(--font-mono)' }} />
                   <Tooltip
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
                         const d = payload[0].payload;
                         return (
-                          <div className="p-2 rounded-md bg-gray-900 text-white text-[11px] font-mono shadow-lg border border-slate-700">
+                          <div className="p-2 rounded-md bg-gray-900 text-white text-[12px] font-mono tabular-nums shadow-lg border border-slate-700">
                             <div>Time: {Number(d.time).toFixed(1)}m</div>
                             <div className="text-cyan-300 font-bold">Vol: {Number(d.volume).toFixed(1)} L</div>
                             <div className="text-gray-400">Flow: +{d.inflow} / -{d.outflow} L/m</div>
@@ -394,7 +394,8 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                     label={{
                       value: `Off: ${settings.pumpOffThreshold}L`,
                       fill: '#ef4444',
-                      fontSize: 10,
+                      fontSize: 11,
+                      fontFamily: 'var(--font-mono)',
                       position: 'insideTopRight',
                     }}
                   />
@@ -407,7 +408,8 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                     label={{
                       value: `On: ${settings.pumpOnThreshold}L`,
                       fill: '#f59e0b',
-                      fontSize: 10,
+                      fontSize: 11,
+                      fontFamily: 'var(--font-mono)',
                       position: 'insideBottomRight',
                     }}
                   />
@@ -431,22 +433,22 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
               <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="font-semibold text-gray-900 dark:text-white">pH Level</h3>
+              <h3 className="font-semibold text-[17px] sm:text-[18px] leading-[1.25] text-gray-900 dark:text-white">pH Level</h3>
             </div>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] sm:text-[12px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
               Optimal
             </span>
           </div>
 
           <div className="flex flex-col items-center py-4">
-            <div className="text-4xl font-bold text-gray-900 dark:text-white mb-1">7.2</div>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+            <div className="font-mono font-bold text-[34px] leading-[1.1] tracking-[-0.02em] tabular-nums text-gray-900 dark:text-white mb-1">7.2</div>
+            <p className="text-[13px] text-emerald-600 dark:text-emerald-400 font-medium">
               Optimal balance for storage
             </p>
 
             <div className="w-full mt-6 space-y-2">
               <div className="h-2.5 w-full bg-gradient-to-r from-rose-500 via-emerald-500 to-blue-500 rounded-full" />
-              <div className="flex justify-between text-[10px] text-gray-500 dark:text-slate-400">
+              <div className="flex justify-between text-[11px] sm:text-[12px] font-mono tabular-nums text-gray-500 dark:text-slate-400">
                 <span>Acidic (0)</span>
                 <span className="font-bold text-gray-700 dark:text-slate-200">Neutral (7)</span>
                 <span>Basic (14)</span>
@@ -454,7 +456,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             </div>
           </div>
 
-          <div className="p-3 rounded-lg bg-gray-50 dark:bg-slate-900/60 border border-gray-100 dark:border-slate-800 text-[11px] text-gray-500 dark:text-slate-400">
+          <div className="p-3 rounded-lg bg-gray-50 dark:bg-slate-900/60 border border-gray-100 dark:border-slate-800 text-[12px] leading-relaxed text-gray-500 dark:text-slate-400">
             Water is in safe neutral range. Sensor verified.
           </div>
         </div>
@@ -464,22 +466,22 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
               <Thermometer className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="font-semibold text-gray-900 dark:text-white">Temperature</h3>
+              <h3 className="font-semibold text-[17px] sm:text-[18px] leading-[1.25] text-gray-900 dark:text-white">Temperature</h3>
             </div>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] sm:text-[12px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
               Optimal
             </span>
           </div>
 
           <div className="flex flex-col items-center py-4">
-            <div className="text-4xl font-bold text-gray-900 dark:text-white mb-1">24.0°C</div>
-            <p className="text-xs text-gray-500 dark:text-slate-400 font-medium">75.2°F</p>
+            <div className="font-mono font-bold text-[34px] leading-[1.1] tracking-[-0.02em] tabular-nums text-gray-900 dark:text-white mb-1">24.0°C</div>
+            <p className="text-[13px] font-mono tabular-nums text-gray-500 dark:text-slate-400 font-medium">75.2°F</p>
 
             <div className="w-full mt-6 space-y-2">
               <div className="h-2.5 w-full bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-500 rounded-full" style={{ width: '48%' }} />
               </div>
-              <div className="flex justify-between text-[10px] text-gray-500 dark:text-slate-400">
+              <div className="flex justify-between text-[11px] sm:text-[12px] font-mono tabular-nums text-gray-500 dark:text-slate-400">
                 <span>0°C (Min)</span>
                 <span className="font-bold text-emerald-600 dark:text-emerald-400">Safe (15–28°C)</span>
                 <span>50°C (Max)</span>
@@ -487,7 +489,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             </div>
           </div>
 
-          <div className="p-3 rounded-lg bg-gray-50 dark:bg-slate-900/60 border border-gray-100 dark:border-slate-800 text-[11px] text-gray-500 dark:text-slate-400">
+          <div className="p-3 rounded-lg bg-gray-50 dark:bg-slate-900/60 border border-gray-100 dark:border-slate-800 text-[12px] leading-relaxed text-gray-500 dark:text-slate-400">
             Stable ambient temperature. Zero risk of freezing or bacterial bloom.
           </div>
         </div>
@@ -501,7 +503,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
         <div className="bg-white dark:bg-[#0f172a] rounded-xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between">
           <div className="flex items-center gap-2 mb-4">
             <ShieldCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">Water Quality</h3>
+            <h3 className="font-semibold text-[17px] sm:text-[18px] leading-[1.25] text-gray-900 dark:text-white">Water Quality</h3>
           </div>
 
           <div className="flex flex-col items-center py-2">
@@ -530,19 +532,19 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-bold text-gray-900 dark:text-white">94%</span>
-                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Excellent</span>
+                <span className="font-mono font-bold text-[34px] leading-[1.1] tracking-[-0.02em] tabular-nums text-gray-900 dark:text-white">94%</span>
+                <span className="text-[13px] text-emerald-600 dark:text-emerald-400 font-semibold">Excellent</span>
               </div>
             </div>
 
-            <div className="w-full grid grid-cols-2 gap-3 pt-2 text-center text-xs">
+            <div className="w-full grid grid-cols-2 gap-3 pt-2 text-center text-[12px]">
               <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-slate-900/60 border border-gray-100 dark:border-slate-800">
-                <p className="text-gray-500 dark:text-slate-400">Clarity</p>
-                <p className="font-bold text-gray-900 dark:text-white">98%</p>
+                <p className="text-gray-500 dark:text-slate-400 font-medium">Clarity</p>
+                <p className="font-bold font-mono tabular-nums text-[13px] text-gray-900 dark:text-white">98%</p>
               </div>
               <div className="p-2.5 rounded-lg bg-gray-50 dark:bg-slate-900/60 border border-gray-100 dark:border-slate-800">
-                <p className="text-gray-500 dark:text-slate-400">Purity</p>
-                <p className="font-bold text-gray-900 dark:text-white">96%</p>
+                <p className="text-gray-500 dark:text-slate-400 font-medium">Purity</p>
+                <p className="font-bold font-mono tabular-nums text-[13px] text-gray-900 dark:text-white">96%</p>
               </div>
             </div>
           </div>
@@ -553,11 +555,11 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Sliders className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="font-semibold text-gray-900 dark:text-white">Water Valve & Hysteresis Control</h3>
+              <h3 className="font-semibold text-[17px] sm:text-[18px] leading-[1.25] text-gray-900 dark:text-white">Water Valve & Hysteresis Control</h3>
             </div>
             <button
               onClick={handleExportTelemetry}
-              className="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 text-xs font-medium text-gray-700 dark:text-slate-300 flex items-center gap-1.5 transition"
+              className="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 text-[12px] font-medium text-gray-700 dark:text-slate-300 flex items-center gap-1.5 transition"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export Telemetry</span>
@@ -569,12 +571,12 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
               {/* Valve Status Toggle */}
               <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-900/60 rounded-lg border border-gray-200 dark:border-slate-800">
                 <div>
-                  <p className="font-semibold text-gray-900 dark:text-white">Valve Status</p>
-                  <p className="text-xs text-gray-500 dark:text-slate-400">Inlet pump flow feed</p>
+                  <p className="font-semibold text-[14px] text-gray-900 dark:text-white">Valve Status</p>
+                  <p className="text-[12px] text-gray-500 dark:text-slate-400">Inlet pump flow feed</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span
-                    className={`text-sm font-bold ${
+                    className={`text-[13px] font-bold font-mono tabular-nums ${
                       liveTank.pumpOn ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-slate-500'
                     }`}
                   >
@@ -601,12 +603,12 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
               {/* Auto Mode Hysteresis Toggle */}
               <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-900/60 rounded-lg border border-gray-200 dark:border-slate-800">
                 <div>
-                  <p className="font-semibold text-gray-900 dark:text-white">Auto Mode</p>
-                  <p className="text-xs text-gray-500 dark:text-slate-400">Automatic hysteresis</p>
+                  <p className="font-semibold text-[14px] text-gray-900 dark:text-white">Auto Mode</p>
+                  <p className="text-[12px] text-gray-500 dark:text-slate-400">Automatic hysteresis</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span
-                    className={`text-sm font-bold ${
+                    className={`text-[13px] font-bold font-mono tabular-nums ${
                       !liveTank.manualOverride ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-slate-500'
                     }`}
                   >
@@ -634,22 +636,22 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             {/* Hysteresis Status Box */}
             <div className="p-4 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 rounded-lg flex flex-col justify-between space-y-3">
               <div>
-                <p className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">
+                <p className="text-[13px] font-semibold text-blue-900 dark:text-blue-200 mb-1">
                   Automatic Hysteresis (200L ON / 900L OFF)
                 </p>
-                <p className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
+                <p className="text-[12px] text-blue-700 dark:text-blue-300 leading-relaxed">
                   Prevents relay chattering by maintaining a 700 L deadband. Pump runs on a 40% duty cycle.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-blue-200 dark:border-blue-800/60">
+              <div className="grid grid-cols-2 gap-2 text-[12px] font-mono tabular-nums pt-2 border-t border-blue-200 dark:border-blue-800/60">
                 <div>
                   <span className="text-blue-600 dark:text-blue-400">Inflow Rate:</span>
-                  <p className="font-bold text-gray-900 dark:text-white">+{liveTank.inflowRate} L/min</p>
+                  <p className="font-bold text-[13px] text-gray-900 dark:text-white">+{liveTank.inflowRate} L/min</p>
                 </div>
                 <div>
                   <span className="text-blue-600 dark:text-blue-400">Drainage Rate:</span>
-                  <p className="font-bold text-gray-900 dark:text-white">-{liveTank.outflowRate} L/min</p>
+                  <p className="font-bold text-[13px] text-gray-900 dark:text-white">-{liveTank.outflowRate} L/min</p>
                 </div>
               </div>
             </div>
@@ -666,9 +668,9 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Layers className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="font-semibold text-gray-900 dark:text-white">8 Numerical Solvers Status</h3>
+              <h3 className="font-semibold text-[17px] sm:text-[18px] leading-[1.25] text-gray-900 dark:text-white">8 Numerical Solvers Status</h3>
             </div>
-            <span className="text-xs text-blue-600 dark:text-blue-400 font-semibold">Active Solvers</span>
+            <span className="text-[11px] sm:text-[12px] text-blue-600 dark:text-blue-400 font-semibold">Active Solvers</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -676,36 +678,36 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
               onClick={() => onNavigate('num-lab')}
               className="p-3.5 rounded-lg border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/60 hover:border-blue-500 transition cursor-pointer space-y-1"
             >
-              <span className="text-[10px] text-gray-500 dark:text-slate-400 font-semibold">ODE SOLVER</span>
-              <p className="font-bold text-gray-900 dark:text-white text-sm">RK4 Method</p>
-              <p className="text-blue-600 dark:text-blue-400 font-bold text-xs">V = {rk4Res.finalVolume.toFixed(2)} L</p>
-              <p className="text-[10px] text-gray-400">O(h⁴) Precision</p>
+              <span className="text-[11px] text-gray-500 dark:text-slate-400 font-bold font-sans tracking-[0.04em] uppercase">ODE SOLVER</span>
+              <p className="font-bold text-gray-900 dark:text-white text-[14px] sm:text-[15px]">RK4 Method</p>
+              <p className="text-blue-600 dark:text-blue-400 font-bold font-mono tabular-nums text-[13px]">V = {rk4Res.finalVolume.toFixed(2)} L</p>
+              <p className="text-[11px] sm:text-[12px] text-gray-400 dark:text-slate-500 font-medium">O(h⁴) Precision</p>
             </div>
 
             <div
               onClick={() => onNavigate('prediction')}
               className="p-3.5 rounded-lg border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/60 hover:border-blue-500 transition cursor-pointer space-y-1"
             >
-              <span className="text-[10px] text-gray-500 dark:text-slate-400 font-semibold">ROOT FINDING</span>
-              <p className="font-bold text-gray-900 dark:text-white text-sm">Newton-Raphson</p>
-              <p className="text-emerald-600 dark:text-emerald-400 font-bold text-xs">
+              <span className="text-[11px] text-gray-500 dark:text-slate-400 font-bold font-sans tracking-[0.04em] uppercase">ROOT FINDING</span>
+              <p className="font-bold text-gray-900 dark:text-white text-[14px] sm:text-[15px]">Newton-Raphson</p>
+              <p className="text-emerald-600 dark:text-emerald-400 font-bold font-mono tabular-nums text-[13px]">
                 {newtonRes.root ? `t* = ${newtonRes.root.toFixed(2)}m` : 'Pending'}
               </p>
-              <p className="text-[10px] text-gray-400">3 Quadratic Iters</p>
+              <p className="text-[11px] sm:text-[12px] text-gray-400 dark:text-slate-500 font-medium">3 Quadratic Iters</p>
             </div>
 
             <div
               onClick={() => onNavigate('distribution')}
               className="p-3.5 rounded-lg border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/60 hover:border-blue-500 transition cursor-pointer space-y-1"
             >
-              <span className="text-[10px] text-gray-500 dark:text-slate-400 font-semibold">PIPE NETWORK</span>
-              <p className="font-bold text-gray-900 dark:text-white text-sm">Gauss-Jordan</p>
-              <p className="text-indigo-600 dark:text-indigo-400 font-bold text-xs">
+              <span className="text-[11px] text-gray-500 dark:text-slate-400 font-bold font-sans tracking-[0.04em] uppercase">PIPE NETWORK</span>
+              <p className="font-bold text-gray-900 dark:text-white text-[14px] sm:text-[15px]">Gauss-Jordan</p>
+              <p className="text-indigo-600 dark:text-indigo-400 font-bold font-mono tabular-nums text-[13px]">
                 {gaussJordanRes.solution
-                  ? `[${gaussJordanRes.solution.map((v) => v.toFixed(0)).join(', ')}] L/m`
+                  ? `[${gaussJordanRes.solution.map((v) => v.toFixed(0)).join(', ')}] L/min`
                   : 'Solved'}
               </p>
-              <p className="text-[10px] text-gray-400">RREF Solved</p>
+              <p className="text-[11px] sm:text-[12px] text-gray-400 dark:text-slate-500 font-medium">RREF Solved</p>
             </div>
           </div>
         </div>
@@ -715,17 +717,17 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="font-semibold text-gray-900 dark:text-white">Recent Alerts</h3>
+              <h3 className="font-semibold text-[17px] sm:text-[18px] leading-[1.25] text-gray-900 dark:text-white">Recent Alerts</h3>
             </div>
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] sm:text-[12px] font-semibold border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300">
               {liveTank.alerts.length} alerts
             </span>
           </div>
 
           <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
             {liveTank.alerts.slice(0, 5).map((r) => {
-              const isWarning = r.type === 'WARNING';
               const isCritical = r.type === 'CRITICAL';
+              const isWarning = r.type === 'WARNING';
               return (
                 <div
                   key={r.id}
@@ -748,15 +750,15 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-gray-900 dark:text-white leading-snug">
+                      <p className="text-[13px] font-semibold text-gray-900 dark:text-white leading-snug">
                         {r.message}
                       </p>
-                      <p className="text-[10px] text-gray-500 dark:text-slate-400 mt-0.5">
+                      <p className="text-[11px] sm:text-[12px] font-mono tabular-nums text-gray-500 dark:text-slate-400 mt-0.5">
                         {r.timestamp} • Sim time: {r.simTime.toFixed(1)}m
                       </p>
                     </div>
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold font-sans ${
                         isCritical
                           ? 'bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200'
                           : isWarning
@@ -776,3 +778,5 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
     </div>
   );
 };
+
+export const DashboardSection = React.memo(DashboardSectionComponent);

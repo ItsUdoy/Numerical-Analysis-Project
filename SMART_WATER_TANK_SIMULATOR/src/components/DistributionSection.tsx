@@ -31,7 +31,7 @@ interface DistributionSectionProps {
   setAugMatrix?: React.Dispatch<React.SetStateAction<number[][]>>;
 }
 
-export const DistributionSection: React.FC<DistributionSectionProps> = () => {
+export const DistributionSectionComponent: React.FC<DistributionSectionProps> = () => {
   // Hydraulic parameters
   const [totalOutflow, setTotalOutflow] = useState<number>(8);
   const [diffPipeAB, setDiffPipeAB] = useState<number>(1);
@@ -157,24 +157,24 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
   const renderAugmentedMatrix = (step: MatrixStep | undefined, method: 'GE' | 'GJ') => {
     if (!step) {
       return (
-        <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] text-center text-xs text-[var(--text-muted)]">
+        <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] text-center text-[12px] text-[var(--text-muted)] font-sans">
           No step data available.
         </div>
       );
     }
 
     return (
-      <div className="p-4 rounded-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] space-y-3 font-mono text-xs">
+      <div className="p-4 rounded-xl bg-[var(--bg-elevated)]/60 border border-[var(--border)] space-y-3 font-mono text-[12px]">
         <div className="flex items-center justify-between border-b border-[var(--border)] pb-2">
-          <span className="font-bold text-[var(--accent)] text-xs">
+          <span className="font-bold text-[var(--accent)] text-[13px] font-mono tabular-nums">
             Step {step.stepIndex}: {step.operationCode}
           </span>
-          <span className="text-[10px] text-[var(--text-muted)] font-sans">
+          <span className="text-[11px] text-[var(--text-muted)] font-sans font-medium">
             {method === 'GE' ? 'Triangular Form' : 'Reduced Row Echelon (RREF)'}
           </span>
         </div>
 
-        <p className="text-[11px] text-[var(--text-secondary)] font-sans">
+        <p className="text-[12px] text-[var(--text-secondary)] font-sans leading-[1.4]">
           {step.explanation}
         </p>
 
@@ -182,7 +182,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
         <div className="p-3 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-strong)] shadow-inner">
           <div className="flex items-center justify-center gap-2">
             <span className="text-xl font-light text-[var(--text-muted)] select-none">[</span>
-            <div className="space-y-1.5 tabular-nums">
+            <div className="space-y-1.5 tabular-nums font-mono">
               {step.matrix.map((row, rIdx) => (
                 <div key={rIdx} className="flex items-center gap-3">
                   {/* Matrix A (3 columns) */}
@@ -192,7 +192,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                       return (
                         <span
                           key={cIdx}
-                          className={`w-12 py-0.5 px-1 rounded text-right transition-colors ${
+                          className={`w-12 py-0.5 px-1 rounded text-right transition-colors text-[12px] tabular-nums ${
                             isDiagonal
                               ? 'font-bold text-[var(--text-primary)] bg-[var(--accent)]/10'
                               : 'text-[var(--text-secondary)]'
@@ -208,7 +208,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                   <div className="w-[1px] h-4 bg-[var(--border-strong)]" />
 
                   {/* Vector b (Right Hand Side) */}
-                  <span className="w-14 font-bold text-right text-[var(--accent)]">
+                  <span className="w-14 font-bold text-right text-[var(--accent)] text-[12px] tabular-nums">
                     {row[3].toFixed(2)}
                   </span>
                 </div>
@@ -226,13 +226,13 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
       {/* Hydraulic Schematic & Live Parameters */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Interactive Manifold SVG Diagram */}
-        <div className="lg:col-span-7 card-surface rounded-xl border border-[var(--border)] p-5 sm:p-6 shadow-md flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-7 card-surface rounded-xl border border-[var(--border)] p-5 sm:p-6 shadow-md flex flex-col justify-between space-y-4 font-sans">
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
-            <span className="font-semibold text-sm text-[var(--text-primary)] flex items-center gap-2">
+            <span className="font-semibold text-[17px] sm:text-[18px] text-[var(--text-primary)] leading-[1.25] flex items-center gap-2">
               <GitBranch className="w-5 h-5 text-[var(--accent)]" /> Multi-Pipe Hydraulic Distribution Manifold
             </span>
             <div className="flex items-center gap-2">
-              <span className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${
+              <span className={`px-2.5 py-0.5 rounded-full text-[12px] font-semibold border ${
                 feasibility.isFeasible
                   ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30'
                   : 'bg-rose-500/10 text-rose-500 border-rose-500/30'
@@ -244,7 +244,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
 
           {/* Feasibility Alert Banner if backflow detected */}
           {feasibility.warningMessage && (
-            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs flex items-center gap-2.5">
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500 text-[12px] flex items-center gap-2.5">
               <AlertTriangle className="w-4 h-4 shrink-0" />
               <span>{feasibility.warningMessage}</span>
             </div>
@@ -278,42 +278,8 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
               <text x="50" y="100" textAnchor="middle" className="text-[11px] font-mono fill-[var(--text-primary)] font-bold">
                 TANK OUTLET
               </text>
-              <text x="50" y="118" textAnchor="middle" className="text-[10px] font-mono fill-[var(--accent)] font-semibold">
+              <text x="50" y="118" textAnchor="middle" className="text-[11px] font-mono fill-[var(--accent)] font-semibold tabular-nums">
                 {totalOutflow} L/min
-              </text>
-
-              {/* Main Trunk Pipe */}
-              <line
-                x1="92"
-                y1="105"
-                x2="175"
-                y2="105"
-                stroke="url(#trunkGrad)"
-                strokeWidth="12"
-                strokeLinecap="round"
-              />
-              <line
-                x1="92"
-                y1="105"
-                x2="175"
-                y2="105"
-                stroke="#ffffff"
-                strokeWidth="2.5"
-                strokeOpacity="0.8"
-                className="animate-pipe-flow"
-              />
-
-              {/* Central Manifold Node */}
-              <circle
-                cx="175"
-                cy="105"
-                r="16"
-                fill="var(--bg-surface)"
-                stroke="var(--accent)"
-                strokeWidth="3.5"
-              />
-              <text x="175" y="109" textAnchor="middle" className="text-[9px] font-mono fill-[var(--text-primary)] font-bold">
-                MANIFOLD
               </text>
 
               {/* Branch 1 to Pipe A (Blue) */}
@@ -371,6 +337,64 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                 className="animate-pipe-flow"
               />
 
+              {/* Main Trunk Pipe */}
+              <line
+                x1="92"
+                y1="105"
+                x2="175"
+                y2="105"
+                stroke="url(#trunkGrad)"
+                strokeWidth="12"
+                strokeLinecap="round"
+              />
+              <line
+                x1="92"
+                y1="105"
+                x2="175"
+                y2="105"
+                stroke="#ffffff"
+                strokeWidth="2.5"
+                strokeOpacity="0.8"
+                className="animate-pipe-flow"
+              />
+
+              {/* Central Manifold Node (Cleanly layered on top of all pipe junctions) */}
+              <circle
+                cx="175"
+                cy="105"
+                r="16"
+                fill="var(--bg-surface)"
+                stroke="var(--accent)"
+                strokeWidth="3.5"
+              />
+              <circle
+                cx="175"
+                cy="105"
+                r="5"
+                fill="var(--accent)"
+              />
+              {/* Manifold Label Badge (Guaranteed Zero Overlap with background pill) */}
+              <g transform="translate(175, 73)">
+                <rect
+                  x="-36"
+                  y="-10"
+                  width="72"
+                  height="20"
+                  rx="4"
+                  fill="var(--bg-elevated)"
+                  stroke="var(--border)"
+                  strokeWidth="1"
+                />
+                <text
+                  x="0"
+                  y="4"
+                  textAnchor="middle"
+                  className="text-[10px] font-mono fill-[var(--text-primary)] font-bold tracking-wider select-none uppercase"
+                >
+                  MANIFOLD
+                </text>
+              </g>
+
               {/* Terminal Box: Pipe A */}
               <g transform="translate(390, 18)">
                 <rect
@@ -383,10 +407,10 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                   stroke={METHOD_IDENTITIES.pipeA.color}
                   strokeWidth="1.5"
                 />
-                <text x="10" y="20" className="text-[11px] font-sans fill-[#3b82f6] font-bold">
+                <text x="10" y="20" className="text-[12px] font-sans fill-[#3b82f6] font-bold">
                   PIPE A (Zone 1) [x]
                 </text>
-                <text x="10" y="38" className="text-xs font-mono fill-[var(--text-primary)] font-bold">
+                <text x="10" y="38" className="text-[12px] font-mono fill-[var(--text-primary)] font-bold tabular-nums">
                   {formatFlowRate(qA)} ({pctA.toFixed(1)}%)
                 </text>
               </g>
@@ -403,10 +427,10 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                   stroke={METHOD_IDENTITIES.pipeB.color}
                   strokeWidth="1.5"
                 />
-                <text x="10" y="20" className="text-[11px] font-sans fill-[#10b981] font-bold">
+                <text x="10" y="20" className="text-[12px] font-sans fill-[#10b981] font-bold">
                   PIPE B (Zone 2) [y]
                 </text>
-                <text x="10" y="38" className="text-xs font-mono fill-[var(--text-primary)] font-bold">
+                <text x="10" y="38" className="text-[12px] font-mono fill-[var(--text-primary)] font-bold tabular-nums">
                   {formatFlowRate(qB)} ({pctB.toFixed(1)}%)
                 </text>
               </g>
@@ -423,10 +447,10 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                   stroke={METHOD_IDENTITIES.pipeC.color}
                   strokeWidth="1.5"
                 />
-                <text x="10" y="20" className="text-[11px] font-sans fill-[#f59e0b] font-bold">
+                <text x="10" y="20" className="text-[12px] font-sans fill-[#f59e0b] font-bold">
                   PIPE C (Zone 3) [z]
                 </text>
-                <text x="10" y="38" className="text-xs font-mono fill-[var(--text-primary)] font-bold">
+                <text x="10" y="38" className="text-[12px] font-mono fill-[var(--text-primary)] font-bold tabular-nums">
                   {formatFlowRate(qC)} ({pctC.toFixed(1)}%)
                 </text>
               </g>
@@ -434,12 +458,12 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
           </div>
 
           {/* Compact Results Strip with % Share Bars */}
-          <div className="space-y-2 pt-2 border-t border-[var(--border)]">
-            <div className="grid grid-cols-3 gap-3 text-xs">
+          <div className="space-y-2 pt-2 border-t border-[var(--border)] font-sans">
+            <div className="grid grid-cols-3 gap-3 text-[12px]">
               <div className="p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] space-y-1">
-                <div className="flex justify-between items-center text-[11px]">
+                <div className="flex justify-between items-center text-[12px]">
                   <span className="font-semibold text-[#3b82f6]">Pipe A</span>
-                  <span className="font-mono text-[var(--text-primary)]">{qA.toFixed(2)} L/min</span>
+                  <span className="font-mono tabular-nums text-[var(--text-primary)]">{qA.toFixed(2)} L/min</span>
                 </div>
                 <div className="w-full bg-[var(--bg-surface)] h-1.5 rounded-full overflow-hidden">
                   <div
@@ -450,9 +474,9 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
               </div>
 
               <div className="p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] space-y-1">
-                <div className="flex justify-between items-center text-[11px]">
+                <div className="flex justify-between items-center text-[12px]">
                   <span className="font-semibold text-[#10b981]">Pipe B</span>
-                  <span className="font-mono text-[var(--text-primary)]">{qB.toFixed(2)} L/min</span>
+                  <span className="font-mono tabular-nums text-[var(--text-primary)]">{qB.toFixed(2)} L/min</span>
                 </div>
                 <div className="w-full bg-[var(--bg-surface)] h-1.5 rounded-full overflow-hidden">
                   <div
@@ -463,9 +487,9 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
               </div>
 
               <div className="p-2.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] space-y-1">
-                <div className="flex justify-between items-center text-[11px]">
+                <div className="flex justify-between items-center text-[12px]">
                   <span className="font-semibold text-[#f59e0b]">Pipe C</span>
-                  <span className="font-mono text-[var(--text-primary)]">{qC.toFixed(2)} L/min</span>
+                  <span className="font-mono tabular-nums text-[var(--text-primary)]">{qC.toFixed(2)} L/min</span>
                 </div>
                 <div className="w-full bg-[var(--bg-surface)] h-1.5 rounded-full overflow-hidden">
                   <div
@@ -477,14 +501,14 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
             </div>
 
             {/* Total Discharge Balance Row with Residual Badge */}
-            <div className="p-3 rounded-lg bg-[var(--bg-elevated)]/60 border border-[var(--border)] flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div className="p-3 rounded-lg bg-[var(--bg-elevated)]/60 border border-[var(--border)] flex flex-wrap items-center justify-between gap-2 text-[12px]">
               <span className="text-[var(--text-secondary)] font-medium">Total Discharge Balance:</span>
               <div className="flex items-center gap-3">
-                <span className="font-mono font-bold text-[var(--text-primary)]">
+                <span className="font-mono font-bold tabular-nums text-[var(--text-primary)]">
                   {qA.toFixed(2)} + {qB.toFixed(2)} + {qC.toFixed(2)} = {sumFlow.toFixed(2)} L/min
                 </span>
                 <span
-                  className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
+                  className="px-2 py-0.5 rounded-full text-[11px] font-mono tabular-nums bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
                   title="Residual ||Ax - b|| = 0 L/min within machine precision"
                 >
                   Residual: {gaussRes.maxResidualError < 1e-12 ? '0 L/min' : gaussRes.maxResidualError.toExponential(2)}
@@ -495,14 +519,14 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
         </div>
 
         {/* Right: Parameter Controls & Live Equations */}
-        <div className="lg:col-span-5 card-surface rounded-xl border border-[var(--border)] p-5 sm:p-6 shadow-md space-y-4 text-xs">
+        <div className="lg:col-span-5 card-surface rounded-xl border border-[var(--border)] p-5 sm:p-6 shadow-md space-y-4 text-[13px] font-sans">
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
-            <span className="font-semibold text-sm text-[var(--text-primary)] flex items-center gap-2">
+            <span className="font-semibold text-[17px] sm:text-[18px] text-[var(--text-primary)] leading-[1.25] flex items-center gap-2">
               <Sliders className="w-4 h-4 text-[var(--accent)]" /> Flow Parameters &amp; Constraints
             </span>
             <button
               onClick={handleResetDefault}
-              className="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-medium text-xs flex items-center gap-1 transition cursor-pointer"
+              className="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-semibold text-[12px] flex items-center gap-1 transition cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset Default</span>
@@ -512,29 +536,29 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
           {/* Governing Linear System with Color-Coded Variables */}
           <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-[11px] font-bold text-[var(--text-primary)] tracking-wide uppercase">
+              <span className="text-[12px] font-bold text-[var(--text-primary)] tracking-wide uppercase">
                 Governing 3x3 Linear System:
               </span>
-              <span className="text-[10px] text-[var(--text-muted)] font-mono">A · x = b</span>
+              <span className="text-[11px] text-[var(--text-muted)] font-mono tabular-nums">A · x = b</span>
             </div>
 
-            <div className="space-y-1.5 font-mono text-[11px]">
+            <div className="space-y-1.5 font-mono text-[12px] tabular-nums">
               <div className="p-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)] flex justify-between items-center">
-                <span className="text-[var(--text-secondary)]">Eq 1 (Total Mass Balance):</span>
+                <span className="text-[var(--text-secondary)] font-sans">Eq 1 (Total Mass Balance):</span>
                 <span className="font-bold">
                   <span className="text-[#3b82f6]">x</span> + <span className="text-[#10b981]">y</span> + <span className="text-[#f59e0b]">z</span> = {totalOutflow} L/min
                 </span>
               </div>
 
               <div className="p-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)] flex justify-between items-center">
-                <span className="text-[var(--text-secondary)]">Eq 2 (Flow Difference):</span>
+                <span className="text-[var(--text-secondary)] font-sans">Eq 2 (Flow Difference):</span>
                 <span className="font-bold">
                   <span className="text-[#3b82f6]">x</span> − <span className="text-[#10b981]">y</span> = {diffPipeAB} L/min
                 </span>
               </div>
 
               <div className="p-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)] flex justify-between items-center">
-                <span className="text-[var(--text-secondary)]">Eq 3 (Branch Ratio):</span>
+                <span className="text-[var(--text-secondary)] font-sans">Eq 3 (Branch Ratio):</span>
                 <span className="font-bold">
                   <span className="text-[#10b981]">y</span> − {ratioBC}<span className="text-[#f59e0b]">z</span> = 0
                 </span>
@@ -543,11 +567,11 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
           </div>
 
           {/* Sliders with Numeric Inputs beside them */}
-          <div className="space-y-4 pt-1">
+          <div className="space-y-4 pt-1 font-sans">
             {/* Slider 1: Total Outflow Q_out */}
             <div className="space-y-1.5">
               <div className="flex justify-between items-center">
-                <label className="text-[var(--text-secondary)] font-medium">
+                <label className="text-[var(--text-secondary)] font-semibold text-[13px] tracking-[0.02em]">
                   Total Drainage Q_out (L/min):
                 </label>
                 <div className="flex items-center gap-1.5">
@@ -558,9 +582,9 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                     step={1}
                     value={totalOutflow}
                     onChange={(e) => setTotalOutflow(Math.max(1, Number(e.target.value)))}
-                    className="w-16 px-1.5 py-0.5 rounded border border-[var(--border)] bg-[var(--bg-elevated)] text-right font-mono font-bold text-xs text-[var(--accent)]"
+                    className="w-16 px-1.5 py-0.5 rounded border border-[var(--border)] bg-[var(--bg-elevated)] text-right font-mono font-bold text-[13px] text-[var(--accent)] tabular-nums"
                   />
-                  <span className="text-[11px] text-[var(--text-muted)]">L/min</span>
+                  <span className="text-[12px] text-[var(--text-muted)] font-medium">L/min</span>
                 </div>
               </div>
               <input
@@ -577,7 +601,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                 }}
                 className="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
               />
-              <div className="flex justify-between text-[10px] text-[var(--text-muted)] font-mono">
+              <div className="flex justify-between text-[11px] sm:text-[12px] text-[var(--text-muted)] font-mono tabular-nums">
                 <span>2 L/min</span>
                 <span>30 L/min</span>
               </div>
@@ -586,7 +610,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
             {/* Slider 2: Flow Difference (Zone 1 - Zone 2) */}
             <div className="space-y-1.5">
               <div className="flex justify-between items-center">
-                <label className="text-[var(--text-secondary)] font-medium">
+                <label className="text-[var(--text-secondary)] font-semibold text-[13px] tracking-[0.02em]">
                   Flow Difference (Zone 1 − Zone 2):
                 </label>
                 <div className="flex items-center gap-1.5">
@@ -597,9 +621,9 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                     step={0.5}
                     value={diffPipeAB}
                     onChange={(e) => setDiffPipeAB(Math.max(0, Number(e.target.value)))}
-                    className="w-16 px-1.5 py-0.5 rounded border border-[var(--border)] bg-[var(--bg-elevated)] text-right font-mono font-bold text-xs text-[var(--accent)]"
+                    className="w-16 px-1.5 py-0.5 rounded border border-[var(--border)] bg-[var(--bg-elevated)] text-right font-mono font-bold text-[13px] text-[var(--accent)] tabular-nums"
                   />
-                  <span className="text-[11px] text-[var(--text-muted)]">L/min</span>
+                  <span className="text-[12px] text-[var(--text-muted)] font-medium">L/min</span>
                 </div>
               </div>
               <input
@@ -616,7 +640,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                 }}
                 className="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
               />
-              <div className="flex justify-between text-[10px] text-[var(--text-muted)] font-mono">
+              <div className="flex justify-between text-[11px] sm:text-[12px] text-[var(--text-muted)] font-mono tabular-nums">
                 <span>0 L/min</span>
                 <span>10 L/min</span>
               </div>
@@ -625,7 +649,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
             {/* Slider 3: Branch Ratio y/z */}
             <div className="space-y-1.5">
               <div className="flex justify-between items-center">
-                <label className="text-[var(--text-secondary)] font-medium">
+                <label className="text-[var(--text-secondary)] font-semibold text-[13px] tracking-[0.02em]">
                   Manifold Flow Ratio (y / z):
                 </label>
                 <div className="flex items-center gap-1.5">
@@ -636,9 +660,9 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                     step={1}
                     value={ratioBC}
                     onChange={(e) => setRatioBC(Math.max(1, Number(e.target.value)))}
-                    className="w-16 px-1.5 py-0.5 rounded border border-[var(--border)] bg-[var(--bg-elevated)] text-right font-mono font-bold text-xs text-[var(--accent)]"
+                    className="w-16 px-1.5 py-0.5 rounded border border-[var(--border)] bg-[var(--bg-elevated)] text-right font-mono font-bold text-[13px] text-[var(--accent)] tabular-nums"
                   />
-                  <span className="text-[11px] text-[var(--text-muted)]">ratio</span>
+                  <span className="text-[12px] text-[var(--text-muted)] font-medium">ratio</span>
                 </div>
               </div>
               <input
@@ -655,7 +679,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                 }}
                 className="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
               />
-              <div className="flex justify-between text-[10px] text-[var(--text-muted)] font-mono">
+              <div className="flex justify-between text-[11px] sm:text-[12px] text-[var(--text-muted)] font-mono tabular-nums">
                 <span>1x (Equal split)</span>
                 <span>5x (High restriction)</span>
               </div>
@@ -663,15 +687,15 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
           </div>
 
           {/* Condition Number & Determinant Block */}
-          <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] space-y-2 text-xs">
+          <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] space-y-2 text-[12px]">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-1.5">
                 <span className="text-[var(--text-secondary)] font-medium">Matrix Determinant det(A):</span>
-                <span className="font-mono font-bold text-[var(--text-primary)]">
+                <span className="font-mono font-bold text-[var(--text-primary)] tabular-nums">
                   det(A) = 2r + 1 = {exactDet}
                 </span>
               </div>
-              <span className="text-[10px] font-semibold text-emerald-500 font-mono">Non-Singular (≠ 0)</span>
+              <span className="text-[11px] font-semibold text-emerald-500 font-mono tabular-nums">Non-Singular (≠ 0)</span>
             </div>
 
             <div className="flex justify-between items-center pt-1 border-t border-[var(--border)]/50">
@@ -686,13 +710,13 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                   <HelpCircle className="w-3.5 h-3.5" />
                 </button>
               </div>
-              <span className={`px-2 py-0.5 rounded-md font-mono font-bold text-xs border ${conditionNumberInfo.badgeColor}`}>
+              <span className={`px-2 py-0.5 rounded-md font-mono font-bold text-[12px] tabular-nums border ${conditionNumberInfo.badgeColor}`}>
                 κ₁ ≈ {conditionNumberInfo.kappa1.toFixed(2)} ({conditionNumberInfo.category})
               </span>
             </div>
 
             {activeTooltip === 'cond' && (
-              <div className="p-2.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[11px] text-[var(--text-secondary)] shadow-lg space-y-1">
+              <div className="p-2.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[12px] text-[var(--text-secondary)] shadow-lg space-y-1 leading-[1.4]">
                 <div className="font-semibold text-[var(--text-primary)]">1-Norm Condition Number κ₁(A) = ||A||₁ · ||A⁻¹||₁:</div>
                 <p>• κ₁ &lt; 10: Well-conditioned (errors are damped)</p>
                 <p>• 10 ≤ κ₁ ≤ 100: Moderately conditioned</p>
@@ -704,13 +728,13 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
       </div>
 
       {/* Synchronized Stepper: Gaussian Elimination vs Gauss-Jordan Reduction */}
-      <div className="card-surface rounded-xl border border-[var(--border)] p-5 sm:p-6 shadow-md space-y-5">
+      <div className="card-surface rounded-xl border border-[var(--border)] p-5 sm:p-6 shadow-md space-y-5 font-sans">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[var(--border)]">
           <div>
-            <h4 className="font-semibold text-sm text-[var(--text-primary)] flex items-center gap-2">
+            <h4 className="font-semibold text-[17px] sm:text-[18px] text-[var(--text-primary)] leading-[1.25] flex items-center gap-2">
               <Cpu className="w-4 h-4 text-[var(--accent)]" /> Synchronized Row Elimination Stepper
             </h4>
-            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            <p className="text-[13px] text-[var(--text-secondary)] mt-0.5 leading-[1.5]">
               Inspect step-by-step matrix row operations for Forward Elimination vs Full Gauss-Jordan Reduction.
             </p>
           </div>
@@ -736,7 +760,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
                   soundFx.playClick();
                   setIsPlaying(!isPlaying);
                 }}
-                className="px-2.5 py-1 rounded-md bg-[var(--accent)] text-white font-semibold text-xs flex items-center gap-1 transition shadow-sm cursor-pointer"
+                className="px-2.5 py-1 rounded-md bg-[var(--accent)] text-white font-semibold text-[12px] flex items-center gap-1 transition shadow-sm cursor-pointer"
               >
                 {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                 <span>{isPlaying ? 'Pause' : 'Autoplay'}</span>
@@ -756,15 +780,15 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
               </button>
             </div>
 
-            <span className="text-xs font-mono font-semibold text-[var(--text-primary)] px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)]">
+            <span className="text-[12px] font-mono font-semibold text-[var(--text-primary)] px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] tabular-nums">
               Step {currentStep} of {maxSteps - 1}
             </span>
 
             {/* View Mode Toggle: Side-by-Side vs Tabs */}
-            <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-xs">
+            <div className="flex items-center p-0.5 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border)] text-[12px]">
               <button
                 onClick={() => setActiveMethodTab('sideBySide')}
-                className={`px-2 py-1 rounded-md font-semibold transition cursor-pointer ${
+                className={`px-2.5 py-1 rounded-md font-semibold transition cursor-pointer ${
                   activeMethodTab === 'sideBySide'
                     ? 'bg-[var(--accent)] text-white shadow-sm'
                     : 'text-[var(--text-secondary)]'
@@ -774,7 +798,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
               </button>
               <button
                 onClick={() => setActiveMethodTab('gaussian')}
-                className={`px-2 py-1 rounded-md font-semibold transition cursor-pointer ${
+                className={`px-2.5 py-1 rounded-md font-semibold transition cursor-pointer ${
                   activeMethodTab === 'gaussian'
                     ? 'bg-[var(--accent)] text-white shadow-sm'
                     : 'text-[var(--text-secondary)]'
@@ -784,7 +808,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
               </button>
               <button
                 onClick={() => setActiveMethodTab('gaussJordan')}
-                className={`px-2 py-1 rounded-md font-semibold transition cursor-pointer ${
+                className={`px-2.5 py-1 rounded-md font-semibold transition cursor-pointer ${
                   activeMethodTab === 'gaussJordan'
                     ? 'bg-[var(--accent)] text-white shadow-sm'
                     : 'text-[var(--text-secondary)]'
@@ -796,7 +820,7 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
 
             <button
               onClick={handleExportSteps}
-              className="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] text-xs font-semibold flex items-center gap-1 transition cursor-pointer"
+              className="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--accent)] text-[12px] font-semibold flex items-center gap-1 transition cursor-pointer"
               title="Export row elimination steps to CSV"
             >
               <Download className="w-3.5 h-3.5" />
@@ -814,14 +838,14 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
         </div>
 
         {/* Matrix Display Container */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
           {(activeMethodTab === 'sideBySide' || activeMethodTab === 'gaussian') && (
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="font-bold text-xs text-[var(--text-primary)]">
+                <span className="font-bold text-[15px] text-[var(--text-primary)]">
                   1. Gaussian Elimination (Forward Elimination)
                 </span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/10 text-blue-500 border border-blue-500/25">
+                <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-500 border border-blue-500/25 font-mono">
                   ~ (1/3)n³ mult/div
                 </span>
               </div>
@@ -835,10 +859,10 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
           {(activeMethodTab === 'sideBySide' || activeMethodTab === 'gaussJordan') && (
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="font-bold text-xs text-[var(--text-primary)]">
+                <span className="font-bold text-[15px] text-[var(--text-primary)]">
                   2. Gauss-Jordan Elimination (Direct RREF)
                 </span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/25">
+                <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/25 font-mono">
                   Direct [I | x]
                 </span>
               </div>
@@ -851,59 +875,59 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
         </div>
 
         {/* Comparison Summary & Final Solution Card */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 font-sans">
           {/* Solution & Verification Card */}
           <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] space-y-2">
             <div className="flex justify-between items-center">
-              <span className="font-bold text-xs text-[var(--text-primary)]">
+              <span className="font-bold text-[13px] text-[var(--text-primary)]">
                 Final Physical Flow Rates (L/min):
               </span>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                <span className="text-[11px] font-semibold text-emerald-500">
+                <span className="text-[12px] font-semibold text-emerald-500">
                   {methodsAgree ? 'Both methods agree (|Δ| < 1e-9)' : 'Solutions computed'}
                 </span>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-2 font-mono text-center">
-              <div className="p-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)]">
-                <div className="text-[10px] text-[#3b82f6] font-sans font-bold">x (Pipe A)</div>
-                <div className="text-base font-bold text-[var(--text-primary)]">{qA.toFixed(2)}</div>
-                <div className="text-[10px] text-[var(--text-muted)]">L/min</div>
+              <div className="p-2.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)]">
+                <div className="text-[11px] text-[#3b82f6] font-sans font-bold">x (Pipe A)</div>
+                <div className="text-[20px] font-bold text-[var(--text-primary)] tabular-nums">{qA.toFixed(2)}</div>
+                <div className="text-[11px] text-[var(--text-muted)] font-medium">L/min</div>
               </div>
-              <div className="p-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)]">
-                <div className="text-[10px] text-[#10b981] font-sans font-bold">y (Pipe B)</div>
-                <div className="text-base font-bold text-[var(--text-primary)]">{qB.toFixed(2)}</div>
-                <div className="text-[10px] text-[var(--text-muted)]">L/min</div>
+              <div className="p-2.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)]">
+                <div className="text-[11px] text-[#10b981] font-sans font-bold">y (Pipe B)</div>
+                <div className="text-[20px] font-bold text-[var(--text-primary)] tabular-nums">{qB.toFixed(2)}</div>
+                <div className="text-[11px] text-[var(--text-muted)] font-medium">L/min</div>
               </div>
-              <div className="p-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)]">
-                <div className="text-[10px] text-[#f59e0b] font-sans font-bold">z (Pipe C)</div>
-                <div className="text-base font-bold text-[var(--text-primary)]">{qC.toFixed(2)}</div>
-                <div className="text-[10px] text-[var(--text-muted)]">L/min</div>
+              <div className="p-2.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)]">
+                <div className="text-[11px] text-[#f59e0b] font-sans font-bold">z (Pipe C)</div>
+                <div className="text-[20px] font-bold text-[var(--text-primary)] tabular-nums">{qC.toFixed(2)}</div>
+                <div className="text-[11px] text-[var(--text-muted)] font-medium">L/min</div>
               </div>
             </div>
           </div>
 
           {/* Algorithmic Complexity Card */}
-          <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] space-y-2 text-xs">
-            <span className="font-bold text-xs text-[var(--text-primary)]">
+          <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] space-y-2 text-[12px]">
+            <span className="font-bold text-[13px] text-[var(--text-primary)]">
               Algorithmic Complexity &amp; Operation Counts:
             </span>
             <div className="space-y-1.5 text-[var(--text-secondary)]">
               <div className="flex justify-between items-center">
-                <span>Gaussian Elimination:</span>
-                <span className="font-mono font-bold text-[var(--text-primary)]">
-                  {gaussRes.steps.length} steps · 17 textbook ops (~18 total flops)
+                <span className="font-normal text-[13px]">Gaussian Elimination:</span>
+                <span className="font-mono font-bold text-[var(--text-primary)] tabular-nums">
+                  {gaussRes.steps.length} steps · 17 ops (~18 flops)
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span>Gauss-Jordan Reduction:</span>
-                <span className="font-mono font-bold text-[var(--text-primary)]">
-                  {gaussJordanRes.steps.length} steps · 23 textbook ops (~27 total flops)
+                <span className="font-normal text-[13px]">Gauss-Jordan Reduction:</span>
+                <span className="font-mono font-bold text-[var(--text-primary)] tabular-nums">
+                  {gaussJordanRes.steps.length} steps · 23 ops (~27 flops)
                 </span>
               </div>
-              <p className="text-[10px] text-[var(--text-muted)] pt-1 border-t border-[var(--border)]/50">
+              <p className="text-[12px] text-[var(--text-muted)] pt-1 border-t border-[var(--border)]/50 leading-[1.4]">
                 Gaussian Elimination with Back-Substitution requires ~33% fewer floating-point operations than full Gauss-Jordan reduction.
               </p>
             </div>
@@ -913,3 +937,5 @@ export const DistributionSection: React.FC<DistributionSectionProps> = () => {
     </div>
   );
 };
+
+export const DistributionSection = React.memo(DistributionSectionComponent);

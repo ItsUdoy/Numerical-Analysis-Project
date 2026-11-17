@@ -49,6 +49,34 @@ import { GraphsSection } from './components/GraphsSection';
 import { ComparisonSection } from './components/ComparisonSection';
 import { SettingsSection } from './components/SettingsSection';
 
+// Isolated Clock component to prevent AppInner from re-rendering every 1 second
+const LiveClock = React.memo<{ onRefreshRef?: React.MutableRefObject<(() => void) | null> }>(({ onRefreshRef }) => {
+  const [time, setTime] = useState<Date>(new Date());
+
+  const refresh = React.useCallback(() => {
+    setTime(new Date());
+  }, []);
+
+  useEffect(() => {
+    if (onRefreshRef) {
+      onRefreshRef.current = refresh;
+    }
+  }, [onRefreshRef, refresh]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <p className="text-[12px] font-normal text-[var(--text-muted)] font-mono tabular-nums">
+      Last updated: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+    </p>
+  );
+});
+
 function AppInner() {
   const {
     theme,
@@ -65,15 +93,7 @@ function AppInner() {
   } = useApp();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
-
-  // Live updated clock every 1 second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setLastUpdated(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const clockRefreshRef = React.useRef<(() => void) | null>(null);
 
   // Live Tank Telemetry State
   const [liveTank, setLiveTank] = useState<LiveTankState>({
@@ -335,10 +355,10 @@ function AppInner() {
                 <Droplets className="h-6 w-6" />
               </div>
               <div className="hidden lg:block">
-                <h2 className="font-bold text-base leading-tight text-[var(--text-primary)]">
+                <h2 className="font-bold text-[17px] leading-tight text-[var(--text-primary)] font-sans">
                   Water Tank
                 </h2>
-                <p className="text-xs text-[var(--text-secondary)]">Monitoring &amp; SCADA</p>
+                <p className="text-[12px] font-medium text-[var(--text-secondary)] font-sans">Monitoring &amp; SCADA</p>
               </div>
             </div>
             <button
@@ -359,10 +379,10 @@ function AppInner() {
                   key={item.id}
                   onClick={() => handleSelectNav(item.id)}
                   aria-current={active ? 'page' : undefined}
-                  className={`w-full relative flex items-center gap-3.5 px-3.5 py-3 rounded-lg text-sm transition-all text-left cursor-pointer group ${
+                  className={`w-full relative flex items-center gap-3.5 px-3.5 py-3 rounded-lg text-[14px] transition-all text-left cursor-pointer group font-sans ${
                     active
-                      ? 'bg-[var(--accent)]/15 text-[var(--accent)] font-bold border border-[var(--accent)]/30 shadow-xs'
-                      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)]'
+                      ? 'bg-[var(--accent)]/15 text-[var(--accent)] font-semibold border border-[var(--accent)]/30 shadow-xs'
+                      : 'text-[var(--text-secondary)] font-medium hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)]'
                   }`}
                   title={item.label}
                 >
@@ -388,27 +408,27 @@ function AppInner() {
         </div>
 
         {/* Pinned StatusBox at Bottom (Never clipped, consistent on all pages) */}
-        <div className="p-3 lg:p-4 m-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]/60 text-xs space-y-2 shrink-0">
-          <div className="flex justify-between items-center text-[11px]">
-            <span className="text-[var(--text-secondary)] hidden lg:inline">System Status:</span>
-            <span className="flex items-center gap-1.5 font-bold mx-auto lg:mx-0">
+        <div className="p-3 lg:p-4 m-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]/60 space-y-2 shrink-0">
+          <div className="flex justify-between items-center text-[12px]">
+            <span className="text-[var(--text-secondary)] font-medium font-sans tracking-[0.02em] hidden lg:inline">System Status:</span>
+            <span className="flex items-center gap-1.5 mx-auto lg:mx-0">
               <span className={`w-2 h-2 rounded-full ${liveTank.isRunning ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
-              <span className="hidden lg:inline text-[var(--text-primary)]">
+              <span className="hidden lg:inline text-[var(--text-primary)] font-mono font-medium text-[12px] tabular-nums">
                 {liveTank.isRunning ? 'Active Sim' : 'Standby'}
               </span>
             </span>
           </div>
 
-          <div className="hidden lg:flex justify-between text-[11px]">
-            <span className="text-[var(--text-secondary)]">Tank Volume:</span>
-            <span className="font-bold text-[var(--accent)] font-mono">
+          <div className="hidden lg:flex justify-between text-[12px]">
+            <span className="text-[var(--text-secondary)] font-medium font-sans tracking-[0.02em]">Tank Volume:</span>
+            <span className="font-medium text-[var(--accent)] font-mono text-[12px] tabular-nums">
               {liveTank.volume.toFixed(1)} L ({tankPercentage.toFixed(0)}%)
             </span>
           </div>
 
-          <div className="hidden lg:flex justify-between text-[11px] pt-1 border-t border-[var(--border)]/50">
-            <span className="text-[var(--text-secondary)]">Valve / Pump:</span>
-            <span className={`font-mono font-bold ${liveTank.pumpOn ? 'text-emerald-500' : 'text-slate-400'}`}>
+          <div className="hidden lg:flex justify-between text-[12px] pt-1 border-t border-[var(--border)]/50">
+            <span className="text-[var(--text-secondary)] font-medium font-sans tracking-[0.02em]">Valve / Pump:</span>
+            <span className={`font-mono font-medium text-[12px] tabular-nums ${liveTank.pumpOn ? 'text-emerald-500' : 'text-slate-400'}`}>
               {liveTank.pumpOn ? `ON (${settings.inflowRate} L/min)` : 'OFF (0 L/min)'}
             </span>
           </div>
@@ -428,12 +448,10 @@ function AppInner() {
               <Menu className="w-5 h-5" />
             </button>
             <div>
-              <h1 className="text-base sm:text-lg font-bold tracking-tight text-[var(--text-primary)]">
+              <h1 className="text-[22px] sm:text-[24px] font-bold tracking-tight text-[var(--text-primary)] font-sans leading-[1.25]">
                 Smart Water Tank Dashboard
               </h1>
-              <p className="text-[11px] text-[var(--text-muted)] font-mono">
-                Last updated: {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-              </p>
+              <LiveClock onRefreshRef={clockRefreshRef} />
             </div>
           </div>
 
@@ -442,7 +460,7 @@ function AppInner() {
             <button
               onClick={() => {
                 soundFx.playClick();
-                setLastUpdated(new Date());
+                clockRefreshRef.current?.();
               }}
               className="p-2 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent)] text-[var(--text-primary)] transition cursor-pointer"
               title="Refresh Telemetry timestamp"

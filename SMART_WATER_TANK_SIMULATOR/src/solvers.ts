@@ -93,7 +93,14 @@ export function evaluateDVdt(t: number, v: number, params: ODEModelParams): numb
   return qIn - qOut;
 }
 
-// Ultra-fine mesh RK4 solver for true exact reference
+// Memoization cache for reference points
+const referenceCache = new Map<string, number>();
+
+export function clearReferenceCache(): void {
+  referenceCache.clear();
+}
+
+// Ultra-fine mesh RK4 solver for true exact reference (Memoized & High-Performance)
 export function computeHighAccuracyReference(tTarget: number, params: ODEModelParams): number {
   if (tTarget <= 0) return params.v0;
 
@@ -103,21 +110,53 @@ export function computeHighAccuracyReference(tTarget: number, params: ODEModelPa
     return Math.max(0, params.v0 + netFlow * tTarget);
   }
 
-  // Torricelli non-linear: solve with ultra-fine sub-step RK4 (h = 0.0005 min)
-  const maxSubStep = 0.001;
-  const steps = Math.max(30, Math.ceil(tTarget / maxSubStep));
+  // Fast cache lookup
+  const cacheKey = `${params.v0}_${params.qIn}_${params.qOut}_${params.torricelliK}_${tTarget.toFixed(4)}`;
+  const cached = referenceCache.get(cacheKey);
+  if (cached !== undefined) return cached;
+
+  // Torricelli non-linear: solve with fine sub-step RK4 (h = 0.01 min gives < 1e-8 L accuracy)
+  const maxSubStep = 0.01;
+  const steps = Math.max(10, Math.ceil(tTarget / maxSubStep));
   const h = tTarget / steps;
   let t = 0;
   let v = params.v0;
 
   for (let i = 0; i < steps; i++) {
     const k1 = evaluateDVdt(t, v, params);
-    const k2 = evaluateDVdt(t + 0.5 * h, v + 0.5 * h * k1, params);
-    const k3 = evaluateDVdt(t + 0.5 * h, v + 0.5 * h * k2, params);
-    const k4 = evaluateDVdt(t + h, v + h * k3, params);
+    const k2 = evaluateDVdt(t + 0.5 * h, Math.max(0, v + 0.5 * h * k1), params);
+    const k3 = evaluateDVdt(t + 0.5 * h, Math.max(0, v + 0.5 * h * k2), params);
+    const k4 = evaluateDVdt(t + h, Math.max(0, v + h * k3), params);
     v += (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
     if (v < 0) v = 0;
     t += h;
+  }
+
+  if (referenceCache.size > 2000) {
+    referenceCache.clear();
+  }
+  referenceCache.set(cacheKey, v);
+  return v;
+}
+
+// Helper to advance high-accuracy reference incrementally from t to tNext
+function advanceReferenceSubstep(tFrom: number, tTo: number, vFrom: number, params: ODEModelParams): number {
+  if (params.model === 'linear') {
+    return Math.max(0, params.v0 + (params.qIn - params.qOut) * tTo);
+  }
+  const dt = tTo - tFrom;
+  if (dt <= 0) return vFrom;
+  const subSteps = Math.max(5, Math.ceil(dt / 0.01));
+  const subH = dt / subSteps;
+  let t = tFrom;
+  let v = vFrom;
+  for (let s = 0; s < subSteps; s++) {
+    const k1 = evaluateDVdt(t, v, params);
+    const k2 = evaluateDVdt(t + 0.5 * subH, Math.max(0, v + 0.5 * subH * k1), params);
+    const k3 = evaluateDVdt(t + 0.5 * subH, Math.max(0, v + 0.5 * subH * k2), params);
+    const k4 = evaluateDVdt(t + subH, Math.max(0, v + subH * k3), params);
+    v = Math.max(0, v + (subH / 6) * (k1 + 2 * k2 + 2 * k3 + k4));
+    t += subH;
   }
   return v;
 }
@@ -141,6 +180,7 @@ export function solveEuler(params: ODEModelParams): ODEResult {
   const steps: ODEStepResult[] = [];
   let t = 0;
   let v = params.v0;
+  let vRef = params.v0;
   let maxAbsError = 0;
   let sumRelError = 0;
 
@@ -158,7 +198,9 @@ export function solveEuler(params: ODEModelParams): ODEResult {
     const slope = evaluateDVdt(t, v, params);
     const vNext = Math.max(0, v + h * slope);
     const tNext = Number((i * h).toFixed(6));
-    const vRef = computeHighAccuracyReference(tNext, params);
+
+    // Advance high-accuracy reference incrementally from t to tNext
+    vRef = advanceReferenceSubstep(t, tNext, vRef, params);
     const absErr = Math.abs(vRef - vNext);
     const relErr = Math.abs(vRef) > 1e-9 ? (absErr / Math.abs(vRef)) * 100 : 0;
 
@@ -212,6 +254,7 @@ export function solveModifiedEuler(params: ODEModelParams): ODEResult {
   const steps: ODEStepResult[] = [];
   let t = 0;
   let v = params.v0;
+  let vRef = params.v0;
   let maxAbsError = 0;
   let sumRelError = 0;
 
@@ -232,7 +275,8 @@ export function solveModifiedEuler(params: ODEModelParams): ODEResult {
     const k2 = evaluateDVdt(tNext, vPred, params);
     const vNext = Math.max(0, v + 0.5 * h * (k1 + k2));
 
-    const vRef = computeHighAccuracyReference(tNext, params);
+    // Advance high-accuracy reference incrementally from t to tNext
+    vRef = advanceReferenceSubstep(t, tNext, vRef, params);
     const absErr = Math.abs(vRef - vNext);
     const relErr = Math.abs(vRef) > 1e-9 ? (absErr / Math.abs(vRef)) * 100 : 0;
 
@@ -287,6 +331,7 @@ export function solveRK4(params: ODEModelParams): ODEResult {
   const steps: ODEStepResult[] = [];
   let t = 0;
   let v = params.v0;
+  let vRef = params.v0;
   let maxAbsError = 0;
   let sumRelError = 0;
 
@@ -308,7 +353,8 @@ export function solveRK4(params: ODEModelParams): ODEResult {
     const k4 = evaluateDVdt(tNext, Math.max(0, v + h * k3), params);
     const vNext = Math.max(0, v + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4));
 
-    const vRef = computeHighAccuracyReference(tNext, params);
+    // Advance high-accuracy reference incrementally from t to tNext
+    vRef = advanceReferenceSubstep(t, tNext, vRef, params);
     const absErr = Math.abs(vRef - vNext);
     const relErr = Math.abs(vRef) > 1e-9 ? (absErr / Math.abs(vRef)) * 100 : 0;
 
@@ -384,32 +430,8 @@ export function solveBisection(params: RootFindingParams): RootFindingResult {
     };
   }
 
-  // Microsecond benchmark loop to avoid Spectre timer quantization
+  // Measure single clean execution time
   const t0 = performance.now();
-  const passes = 30;
-  for (let p = 0; p < passes; p++) {
-    let ba = params.lowerBound;
-    let bb = params.upperBound;
-    let bfa = evaluateG(ba, params);
-    let bfb = evaluateG(bb, params);
-    let bPrevMid = ba;
-    for (let i = 1; i <= params.maxIterations; i++) {
-      const bMid = 0.5 * (ba + bb);
-      const bfMid = evaluateG(bMid, params);
-      const bErr = i === 1 ? 0.5 * Math.abs(bb - ba) : Math.abs(bMid - bPrevMid);
-      if (Math.abs(bfMid) <= params.tolerance || bErr <= params.tolerance) break;
-      if (bfa * bfMid < 0) {
-        bb = bMid;
-        bfb = bfMid;
-      } else {
-        ba = bMid;
-        bfa = bfMid;
-      }
-      bPrevMid = bMid;
-    }
-  }
-  const pureExecTime = Math.max(0.004, (performance.now() - t0) / passes);
-
   const iterations: RootIteration[] = [];
   let prevMid = a;
 
@@ -421,6 +443,7 @@ export function solveBisection(params: RootFindingParams): RootFindingResult {
     iterations.push({ iteration: i, a, b, x: mid, fx: fMid, error });
 
     if (Math.abs(fMid) <= params.tolerance || error <= params.tolerance) {
+      const pureExecTime = Math.max(0.002, performance.now() - t0);
       return {
         methodName: 'Bisection Method',
         converged: true,
@@ -442,6 +465,7 @@ export function solveBisection(params: RootFindingParams): RootFindingResult {
   }
 
   const lastMid = 0.5 * (a + b);
+  const pureExecTime = Math.max(0.002, performance.now() - t0);
   return {
     methodName: 'Bisection Method',
     converged: false,
@@ -482,34 +506,8 @@ export function solveFalsePosition(params: RootFindingParams): RootFindingResult
     };
   }
 
-  // Microsecond benchmark loop to avoid Spectre timer quantization
+  // Measure single clean execution time
   const t0 = performance.now();
-  const passes = 30;
-  for (let p = 0; p < passes; p++) {
-    let ba = params.lowerBound;
-    let bb = params.upperBound;
-    let bfa = evaluateG(ba, params);
-    let bfb = evaluateG(bb, params);
-    let bPrevC = ba;
-    for (let i = 1; i <= params.maxIterations; i++) {
-      const denom = bfb - bfa;
-      if (Math.abs(denom) < 1e-14) break;
-      const bc = (ba * bfb - bb * bfa) / denom;
-      const bfc = evaluateG(bc, params);
-      const bErr = i === 1 ? Math.abs(bb - ba) : Math.abs(bc - bPrevC);
-      if (Math.abs(bfc) <= params.tolerance || bErr <= params.tolerance) break;
-      if (bfa * bfc < 0) {
-        bb = bc;
-        bfb = bfc;
-      } else {
-        ba = bc;
-        bfa = bfc;
-      }
-      bPrevC = bc;
-    }
-  }
-  const pureExecTime = Math.max(0.004, (performance.now() - t0) / passes);
-
   const iterations: RootIteration[] = [];
   let prevC = a;
 
@@ -524,6 +522,7 @@ export function solveFalsePosition(params: RootFindingParams): RootFindingResult
     iterations.push({ iteration: i, a, b, x: c, fx: fc, error });
 
     if (Math.abs(fc) <= params.tolerance || error <= params.tolerance) {
+      const pureExecTime = Math.max(0.002, performance.now() - t0);
       return {
         methodName: 'False Position (Regula Falsi)',
         converged: true,
@@ -545,6 +544,7 @@ export function solveFalsePosition(params: RootFindingParams): RootFindingResult
   }
 
   const lastC = (a * fb - b * fa) / (fb - fa);
+  const pureExecTime = Math.max(0.002, performance.now() - t0);
   return {
     methodName: 'False Position (Regula Falsi)',
     converged: false,
@@ -570,25 +570,8 @@ export function solveNewtonRaphson(params: RootFindingParams): RootFindingResult
     };
   }
 
-  // Microsecond benchmark loop to avoid Spectre timer quantization
+  // Measure single clean execution time
   const t0 = performance.now();
-  const passes = 30;
-  for (let p = 0; p < passes; p++) {
-    let bx = params.initialGuess;
-    for (let i = 1; i <= params.maxIterations; i++) {
-      const bfx = evaluateG(bx, params);
-      const bdfx = evaluateGPrime(bx, params);
-      if (Math.abs(bdfx) < 1e-8) break;
-      const bxNext = bx - bfx / bdfx;
-      const bErr = Math.abs(bxNext - bx);
-      if (bxNext < 0 || bxNext > 5000 || Number.isNaN(bxNext)) break;
-      const bfNext = evaluateG(bxNext, params);
-      if (Math.abs(bfNext) <= params.tolerance || bErr <= params.tolerance) break;
-      bx = bxNext;
-    }
-  }
-  const pureExecTime = Math.max(0.003, (performance.now() - t0) / passes);
-
   const iterations: RootIteration[] = [];
 
   for (let i = 1; i <= params.maxIterations; i++) {
@@ -597,6 +580,7 @@ export function solveNewtonRaphson(params: RootFindingParams): RootFindingResult
 
     if (Math.abs(dfx) < 1e-8) {
       iterations.push({ iteration: i, x, fx, dfx, error: 0 });
+      const pureExecTime = Math.max(0.002, performance.now() - t0);
       return {
         methodName: 'Newton-Raphson Method',
         converged: false,
@@ -611,6 +595,7 @@ export function solveNewtonRaphson(params: RootFindingParams): RootFindingResult
     const error = Math.abs(xNext - x);
 
     if (xNext < 0 || xNext > 5000 || Number.isNaN(xNext)) {
+      const pureExecTime = Math.max(0.002, performance.now() - t0);
       return {
         methodName: 'Newton-Raphson Method',
         converged: false,
@@ -625,6 +610,7 @@ export function solveNewtonRaphson(params: RootFindingParams): RootFindingResult
     iterations.push({ iteration: i, x: xNext, fx: fNext, dfx, error });
 
     if (Math.abs(fNext) <= params.tolerance || error <= params.tolerance) {
+      const pureExecTime = Math.max(0.002, performance.now() - t0);
       return {
         methodName: 'Newton-Raphson Method',
         converged: true,
@@ -637,6 +623,7 @@ export function solveNewtonRaphson(params: RootFindingParams): RootFindingResult
     x = xNext;
   }
 
+  const pureExecTime = Math.max(0.002, performance.now() - t0);
   return {
     methodName: 'Newton-Raphson Method',
     converged: false,

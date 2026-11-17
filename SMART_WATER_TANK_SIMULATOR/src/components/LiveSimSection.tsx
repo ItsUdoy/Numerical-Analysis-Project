@@ -22,7 +22,7 @@ interface LiveSimSectionProps {
   onResetTank: () => void;
 }
 
-export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
+export const LiveSimSectionComponent: React.FC<LiveSimSectionProps> = ({
   liveTank,
   setLiveTank,
   settings,
@@ -56,7 +56,7 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Controls Toolbar */}
-      <div className="p-4 bg-white dark:bg-[#0f172a] rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-4 text-xs font-sans">
+      <div className="p-4 bg-white dark:bg-[#0f172a] rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-4 text-[13px] font-sans">
         <div className="flex items-center gap-2">
           <button
             onClick={() => {
@@ -78,7 +78,7 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
               soundFx.playClick();
               onResetTank();
             }}
-            className="px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 text-gray-700 dark:text-slate-300 flex items-center gap-1.5 transition"
+            className="px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 text-gray-700 dark:text-slate-300 flex items-center gap-1.5 transition font-medium"
           >
             <RotateCcwIcon className="w-4 h-4" />
             <span>Reset (200L)</span>
@@ -89,7 +89,7 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
               soundFx.playClick();
               setLiveTank((p) => ({ ...p, pumpOn: !p.pumpOn }));
             }}
-            className={`px-3 py-2 rounded-lg border flex items-center gap-1.5 transition ${
+            className={`px-3.5 py-2 rounded-lg border flex items-center gap-1.5 transition font-semibold ${
               liveTank.pumpOn
                 ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-300 border-blue-200 dark:border-blue-800'
                 : 'border-gray-200 dark:border-slate-700 text-gray-500'
@@ -102,7 +102,7 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
 
         {/* Speed Multipliers */}
         <div className="flex items-center gap-2">
-          <span className="text-gray-500 dark:text-slate-400 font-medium">Speed:</span>
+          <span className="text-gray-500 dark:text-slate-400 font-medium text-[13px]">Speed:</span>
           <div className="flex gap-1">
             {[1, 2, 5, 10, 20].map((s) => (
               <button
@@ -111,7 +111,7 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
                   soundFx.playClick();
                   setLiveTank((p) => ({ ...p, speed: s }));
                 }}
-                className={`px-2.5 py-1 rounded-md text-xs font-semibold transition border ${
+                className={`px-2.5 py-1 rounded-md text-[12px] font-mono font-semibold tabular-nums transition border ${
                   liveTank.speed === s
                     ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
                     : 'border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-slate-400 hover:bg-gray-100'
@@ -124,7 +124,7 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
 
           <button
             onClick={handleExportCSV}
-            className="ml-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 text-blue-600 dark:text-blue-400 flex items-center gap-1.5 transition"
+            className="ml-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 text-blue-600 dark:text-blue-400 flex items-center gap-1.5 transition text-[12px] font-medium"
           >
             <DownloadIcon className="w-3.5 h-3.5" />
             <span>CSV</span>
@@ -149,7 +149,7 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
             />
 
             {/* Quick Level Jump Presets */}
-            <div className="w-full grid grid-cols-4 gap-1.5 mt-3 text-[10px] font-mono">
+            <div className="w-full grid grid-cols-4 gap-1.5 mt-3 text-[12px] font-mono font-semibold tabular-nums">
               <button
                 onClick={() => setTankLevel(150)}
                 className="py-1 px-1 rounded-md border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900 hover:border-blue-500 text-gray-700 dark:text-slate-300 text-center transition"
@@ -178,15 +178,15 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
           </div>
 
           {/* Real-time Dynamic Sliders */}
-          <div className="bg-white dark:bg-[#0f172a] rounded-xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm space-y-4 text-xs font-sans">
-            <h3 className="font-semibold text-sm text-gray-900 dark:text-white flex items-center gap-2">
+          <div className="bg-white dark:bg-[#0f172a] rounded-xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm space-y-4 text-[13px] font-sans">
+            <h3 className="font-semibold text-[15px] sm:text-[16px] leading-[1.25] text-gray-900 dark:text-white flex items-center gap-2">
               <SlidersIcon className="w-4 h-4 text-blue-600" /> Live Parameters Control
             </h3>
 
             <div>
-              <div className="flex justify-between text-gray-700 dark:text-slate-300 mb-1">
-                <span>Set Fluid Volume:</span>
-                <span className="text-blue-600 dark:text-blue-400 font-bold">
+              <div className="flex justify-between text-gray-700 dark:text-slate-300 mb-1 font-medium">
+                <span className="tracking-[0.02em]">Set Fluid Volume:</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold font-mono tabular-nums">
                   {liveTank.volume.toFixed(1)} L ({percentage.toFixed(1)}%)
                 </span>
               </div>
@@ -209,9 +209,9 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
             </div>
 
             <div>
-              <div className="flex justify-between text-gray-700 dark:text-slate-300 mb-1">
-                <span>Inflow Delivery Rate:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+              <div className="flex justify-between text-gray-700 dark:text-slate-300 mb-1 font-medium">
+                <span className="tracking-[0.02em]">Inflow Delivery Rate:</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold font-mono tabular-nums">
                   +{liveTank.inflowRate} L/min
                 </span>
               </div>
@@ -227,9 +227,9 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
             </div>
 
             <div>
-              <div className="flex justify-between text-gray-700 dark:text-slate-300 mb-1">
-                <span>Drainage Outflow Rate:</span>
-                <span className="text-blue-600 dark:text-blue-400 font-bold">
+              <div className="flex justify-between text-gray-700 dark:text-slate-300 mb-1 font-medium">
+                <span className="tracking-[0.02em]">Drainage Outflow Rate:</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold font-mono tabular-nums">
                   -{liveTank.outflowRate} L/min
                 </span>
               </div>
@@ -244,9 +244,9 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
               />
             </div>
 
-            <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 text-[11px] text-blue-900 dark:text-blue-200">
-              <span className="font-bold">Hysteresis Deadband: </span>
-              Pump triggers at &le; {settings.pumpOnThreshold} L and cuts off at &ge; {settings.pumpOffThreshold} L.
+            <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 text-[12px] leading-relaxed text-blue-900 dark:text-blue-200">
+              <span className="font-semibold">Hysteresis Deadband: </span>
+              Pump triggers at &le; <span className="font-mono tabular-nums font-semibold">{settings.pumpOnThreshold} L</span> and cuts off at &ge; <span className="font-mono tabular-nums font-semibold">{settings.pumpOffThreshold} L</span>.
             </div>
           </div>
         </div>
@@ -255,25 +255,26 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
         <div className="lg:col-span-7 space-y-6">
           {/* Chart 1: Water Level Volume History */}
           <div className="bg-white dark:bg-[#0f172a] rounded-xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm space-y-3">
-            <div className="flex items-center justify-between text-xs font-sans">
+            <div className="flex items-center justify-between text-[13px] font-sans">
               <span className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <ActivityIcon className="w-4 h-4 text-blue-600" /> Tank Volume History (Sawtooth Cycle)
               </span>
-              <span className="text-blue-600 dark:text-blue-400 font-bold">{liveTank.volume.toFixed(1)} L</span>
+              <span className="text-blue-600 dark:text-blue-400 font-bold font-mono tabular-nums">{liveTank.volume.toFixed(1)} L</span>
             </div>
 
             <div className="w-full h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={liveTank.history} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-slate-800" />
-                  <XAxis dataKey="time" stroke="#6b7280" tick={{ fontSize: 10 }} />
-                  <YAxis domain={[0, liveTank.capacity]} stroke="#6b7280" tick={{ fontSize: 10 }} />
+                  <XAxis dataKey="time" stroke="#6b7280" tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }} />
+                  <YAxis domain={[0, liveTank.capacity]} stroke="#6b7280" tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }} />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: '#ffffff',
                       border: '1px solid #e5e7eb',
                       borderRadius: '8px',
                       fontSize: '11px',
+                      fontFamily: 'var(--font-mono)',
                     }}
                   />
                   <Area
@@ -293,11 +294,11 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
 
           {/* Chart 2: Flow Rates LineChart */}
           <div className="bg-white dark:bg-[#0f172a] rounded-xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm space-y-3">
-            <div className="flex items-center justify-between text-xs font-sans">
+            <div className="flex items-center justify-between text-[13px] font-sans">
               <span className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <LayersIcon className="w-4 h-4 text-emerald-600" /> Inflow vs Outflow Dynamics (L/min)
               </span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold font-mono tabular-nums">
                 In: {liveTank.pumpOn ? liveTank.inflowRate : 0} | Out: {liveTank.outflowRate}
               </span>
             </div>
@@ -306,14 +307,15 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={liveTank.history} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-slate-800" />
-                  <XAxis dataKey="time" stroke="#6b7280" tick={{ fontSize: 10 }} />
-                  <YAxis domain={[0, 65]} stroke="#6b7280" tick={{ fontSize: 10 }} />
+                  <XAxis dataKey="time" stroke="#6b7280" tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }} />
+                  <YAxis domain={[0, 65]} stroke="#6b7280" tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }} />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: '#ffffff',
                       border: '1px solid #e5e7eb',
                       borderRadius: '8px',
                       fontSize: '11px',
+                      fontFamily: 'var(--font-mono)',
                     }}
                   />
                   <Line
@@ -343,3 +345,5 @@ export const LiveSimSection: React.FC<LiveSimSectionProps> = ({
     </div>
   );
 };
+
+export const LiveSimSection = React.memo(LiveSimSectionComponent);

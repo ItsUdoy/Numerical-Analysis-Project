@@ -11,7 +11,7 @@ import {
   RootIteration,
   LinearSystemResult,
   MatrixStep,
-} from './types';
+} from   './types';
 
 export const DEFAULT_SETTINGS: SystemSettings = {
   tankCapacity: 1000,
@@ -139,7 +139,7 @@ export function computeHighAccuracyReference(tTarget: number, params: ODEModelPa
   return v;
 }
 
-// Helper to advance high-accuracy reference incrementally from t to tNext
+// Helper advance high-accuracy reference incrementally from t to tNext
 function advanceReferenceSubstep(tFrom: number, tTo: number, vFrom: number, params: ODEModelParams): number {
   if (params.model === 'linear') {
     return Math.max(0, params.v0 + (params.qIn - params.qOut) * tTo);
@@ -857,8 +857,8 @@ export function solveGaussJordan(augInput: number[][]): LinearSystemResult {
   const { residuals, maxError } = computeResiduals(orig, sol);
   return {
     methodName: 'Gauss-Jordan Elimination',
-    status: 'UNIQUE',
-    statusMessage: 'Reduced Row Echelon Form [I | x] obtained directly without back-substitution.',
+    status: 'UNIQUE ',
+    statusMessage: ' Reduced Row Echelon Form  [I | x]  obtained directly without back-substitution.',
     solution: sol,
     steps,
     residuals,
